@@ -63,6 +63,7 @@
           "sudo apt-get upgrade -yq",
           "sudo apt-get install cloud-init -yq",
           "sudo dpkg-reconfigure cloud-init --frontend=noninteractive"
+          "curl -sL https://raw.githubusercontent.com/sammcgeown/vsphere-packer-templates/master/ubuntu-18.04/prepare-template.sh | sudo -E bash -"
         ]
       }
     ]
