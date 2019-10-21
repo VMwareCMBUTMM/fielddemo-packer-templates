@@ -1,5 +1,11 @@
 # Cache objects
 packer_cache/
+# Packer executable
+packer
 
 # For built boxes
 *.box
+
+# Live Variables JSON file (contains passwords!)
+variables.json
+
