@@ -1,0 +1,15 @@
+{
+    "vcenter_server":"vcsa.definit.local",
+    "username":"sam@definit.local",
+    "password":"mdrn1jQ1",
+    "datastore":"Cluster02-vSAN",
+    "folder": "Lab Infrastructure/Templates",
+    "host":"t7500.definit.local",
+    "cluster": "Cluster02",
+    "network": "Cluster02-VLAN010",
+    "ssh_username": "sam",
+    "ssh_password": "mdrn1jQ1",
+    "ssh_private_key": "/Users/smcgeown/.ssh/id_rsa",
+    "ubuntu1804_iso": "[LabSources] ubuntu/ubuntu-18.04.3-server-amd64.iso",
+    "ubuntu1804_checksum": "7d8e0055d663bffa27c1718685085626cb59346e7626ba3d3f476322271f573e"
+}
