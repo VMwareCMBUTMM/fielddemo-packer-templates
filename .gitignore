@@ -9,3 +9,4 @@ packer
 # Live Variables JSON file (contains passwords!)
 variables.json
 
+windows-2016/setup/autounattend.xml
