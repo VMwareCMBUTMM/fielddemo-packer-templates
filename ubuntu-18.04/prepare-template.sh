@@ -1,10 +1,3 @@
-#!/bin/bash
-######################################################
-#### WARNING PIPING TO BASH IS STUPID: DO NOT USE THIS
-######################################################
-# modified from: jcppkkk/prepare-ubuntu-template.sh
-# TESTED ON UBUNTU 18.04 LTS
-
 if [ `id -u` -ne 0 ]; then
 	echo Need sudo
 	exit 1
