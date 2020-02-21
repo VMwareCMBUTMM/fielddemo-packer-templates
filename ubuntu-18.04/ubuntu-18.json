@@ -58,6 +58,7 @@
     "provisioners": [
       {
         "type": "shell",
+        "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
         "inline": [
           "sudo apt-get update",
           "sudo apt-get upgrade -yq",
