@@ -60,10 +60,10 @@
         "type": "shell",
         "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
         "inline": [
-          "sudo apt-get update",
-          "sudo apt-get upgrade -yq",
-          "sudo apt-get install curl cloud-init -yq",
-          "sudo dpkg-reconfigure cloud-init --frontend=noninteractive",
+          "apt-get update",
+          "apt-get upgrade -yq",
+          "apt-get install curl cloud-init -yq",
+          "dpkg-reconfigure cloud-init --frontend=noninteractive",
           "cloud-init clean",
           "truncate -s 0 /etc/machine-id",
           "rm /var/lib/dbus/machine-id",
@@ -77,13 +77,13 @@
           "truncate -s0 /etc/hostname",
           "hostnamectl set-hostname localhost",
           "apt clean",
-          "sudo swapoff --all",
-          "sudo sed -ri '/\\sswap\\s/s/^#?/#/' /etc/fstab",
+          "swapoff --all",
+          "sed -ri '/\\sswap\\s/s/^#?/#/' /etc/fstab",
           "sed -i 's/optional: true/dhcp-identifier: mac/g' /etc/netplan/50-cloud-init.yaml",
-          "sudo cloud-init clean --logs",
+          "cloud-init clean --logs",
           "cat /dev/null > ~/.bash_history && history -c",
           "history -w"
-        ]
+        ],
       }
     ]
   }
