@@ -1,19 +1,20 @@
 {
+    "sensitive-variables": ["vcenter_password","ssh_password"],
     "builders": [
       {
         "type": "vsphere-iso",
         "vcenter_server":      "{{user `vcenter_server`}}",
-        "username":            "{{user `username`}}",
-        "password":            "{{user `password`}}",
+        "username":            "{{user `vcenter_username`}}",
+        "password":            "{{user `vcenter_password`}}",
         "insecure_connection": "true",
-        "vm_name": "packer-ubuntu-1804-{{isotime \"2006-01-02\"}}",
-        "datastore": "{{user `datastore`}}",
-        "folder": "{{user `folder`}}",
-        "host":     "{{user `host`}}",
+        "vm_name": "{{user `ubuntu_vm_name`}}",
+        "datastore": "{{user `vcenter_datastore`}}",
+        "folder": "{{user `vcenter_folder`}}",
+        "host":     "{{user `vcenter_host`}}",
         "convert_to_template": "true",
         "create_snapshot": "true",
-        "cluster": "{{user `cluster`}}",
-        "network": "{{user `network`}}",
+        "cluster": "{{user `vcenter_cluster`}}",
+        "network": "{{user `vcenter_network`}}",
         "boot_order": "disk,cdrom",
         "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer.",
         "guest_os_type": "ubuntu64Guest",
@@ -83,7 +84,7 @@
           "cloud-init clean --logs",
           "cat /dev/null > ~/.bash_history && history -c",
           "history -w"
-        ],
+        ]
       }
     ]
   }
