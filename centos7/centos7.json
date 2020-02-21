@@ -6,7 +6,7 @@
         "username":            "{{user `username`}}",
         "password":            "{{user `password`}}",
         "insecure_connection": "true",
-        "vm_name": "packer-ubuntu-1804-{{isotime \"2006-01-02\"}}",
+        "vm_name": "packer-centos-7-{{isotime \"2006-01-02\"}}",
         "datastore": "{{user `datastore`}}",
         "folder": "{{user `folder`}}",
         "host":     "{{user `host`}}",
@@ -16,7 +16,7 @@
         "network": "{{user `network`}}",
         "boot_order": "disk,cdrom",
         "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer.",
-        "guest_os_type": "ubuntu64Guest",
+        "guest_os_type": "centos7_64Guest",
         "ssh_username": "{{user `ssh_username`}}",
         "ssh_password": "{{user `ssh_password`}}",
         "CPUs":             1,
@@ -32,38 +32,15 @@
         "iso_checksum": "{{user `ubuntu1804_checksum`}}",
         "iso_checksum_type": "sha256",
         "floppy_files": [
-          "{{template_dir}}/preseed.cfg",
-          "{{template_dir}}/prepare-template.sh"
+          "{{template_dir}}/centos.ks"
         ],
-        "boot_command": [
-          "<enter><wait><f6><wait><esc><wait>",
-          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-          "<bs><bs><bs>",
-          "/install/vmlinuz",
-          " initrd=/install/initrd.gz",
-          " priority=critical",
-          " locale=en_US",
-          " file=/media/preseed.cfg",
-          "<enter>"
-        ]
+        "boot_command": " inst.text inst.ks=hd:fd0:/centos.ks"
       }
     ],
     "provisioners": [
       {
         "type": "shell",
         "inline": [
-          "sudo apt-get update",
-          "sudo apt-get upgrade -yq",
-          "sudo apt-get install curl cloud-init -yq",
-          "sudo dpkg-reconfigure cloud-init --frontend=noninteractive",
-          "curl -sL https://raw.githubusercontent.com/sammcgeown/vsphere-packer-templates/master/ubuntu-18.04/prepare-template.sh | sudo -E bash -"
         ]
       }
     ]

@@ -5,8 +5,4 @@ packer
 
 # For built boxes
 *.box
-
-# Live Variables JSON file (contains passwords!)
-variables.json
-
-windows-2016/setup/autounattend.xml
+packer.1.3.5
