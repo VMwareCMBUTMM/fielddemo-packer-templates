@@ -61,29 +61,7 @@
         "type": "shell",
         "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
         "inline": [
-          "apt-get update",
-          "apt-get upgrade -yq",
-          "apt-get install curl cloud-init -yq",
-          "dpkg-reconfigure cloud-init --frontend=noninteractive",
-          "cloud-init clean",
-          "truncate -s 0 /etc/machine-id",
-          "rm /var/lib/dbus/machine-id",
-          "ln -s /etc/machine-id /var/lib/dbus/machine-id",
-          "service rsyslog stop",
-          "if [ -f /var/log/wtmp ]; then truncate -s0 /var/log/wtmp; fi",
-          "if [ -f /var/log/lastlog ]; then truncate -s0 /var/log/lastlog; fi",
-          "rm -rf /tmp/*",
-          "rm -rf /var/tmp/*",
-          "sed -i 's/preserve_hostname: false/preserve_hostname: true/g' /etc/cloud/cloud.cfg",
-          "truncate -s0 /etc/hostname",
-          "hostnamectl set-hostname localhost",
-          "apt clean",
-          "swapoff --all",
-          "sed -ri '/\\sswap\\s/s/^#?/#/' /etc/fstab",
-          "sed -i 's/optional: true/dhcp-identifier: mac/g' /etc/netplan/50-cloud-init.yaml",
-          "cloud-init clean --logs",
-          "cat /dev/null > ~/.bash_history && history -c",
-          "history -w"
+          "./scripts/prepare-template.sh"
         ]
       }
     ]
