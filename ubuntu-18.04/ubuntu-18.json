@@ -33,8 +33,7 @@
         "iso_checksum": "{{user `ubuntu1804_checksum`}}",
         "iso_checksum_type": "sha256",
         "floppy_files": [
-          "{{template_dir}}/preseed.cfg",
-          "{{template_dir}}/prepare-template.sh"
+          "{{template_dir}}/preseed.cfg"
         ],
         "boot_command": [
           "<enter><wait><f6><wait><esc><wait>",
@@ -60,8 +59,8 @@
       {
         "type": "shell",
         "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
-        "inline": [
-          "./scripts/prepare-template.sh"
+        "scripts": [
+          "../scripts/prepare-template.sh"
         ]
       }
     ]
