@@ -7,7 +7,6 @@
         "username":            "{{user `vcenter_username`}}",
         "password":            "{{user `vcenter_password`}}",
         "insecure_connection": "true",
-        "vm_name": "{{user `ubuntu_vm_name`}}",
         "datastore": "{{user `vcenter_datastore`}}",
         "folder": "{{user `vcenter_folder`}}",
         "host":     "{{user `vcenter_host`}}",
@@ -18,8 +17,11 @@
         "boot_order": "disk,cdrom",
         "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer.",
         "guest_os_type": "ubuntu64Guest",
+
         "ssh_username": "{{user `ssh_username`}}",
         "ssh_password": "{{user `ssh_password`}}",
+
+        "vm_name": "{{user `ubuntu_vm_name`}}",
         "CPUs":             1,
         "RAM":              1024,
         "RAM_reserve_all": true,
@@ -27,6 +29,7 @@
         "disk_size":        20480,
         "disk_thin_provisioned": true,
         "network_card": "vmxnet3",
+        
         "iso_paths": [
           "{{user `ubuntu1804_iso`}}"
         ],
@@ -60,7 +63,7 @@
         "type": "shell",
         "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
         "scripts": [
-          "../scripts/prepare-template.sh"
+          "../scripts/ubuntu18.sh"
         ]
       }
     ]

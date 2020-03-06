@@ -6,7 +6,7 @@
     "vcenter_folder": "Templates",
     "vcenter_cluster": "sc2c03-BCA",
     "vcenter_network": "Mgmt VMs",
-    "ubuntu_vm_name": "{{env `UBUNTU_VM_NAME`}}",
+    "ubuntu_vm_name": "packer-ubuntu-template",
     "ssh_username": "autotmm",
     "ssh_password": "VMware1!",
     "ubuntu1804_iso": "[sc2c01vsan01] ISO/ubuntu-18.04.3-server-amd64.iso",
@@ -16,5 +16,13 @@
     "windows_tools_iso": "[sc2c01vsan01] ISO/VMware-tools-windows-10.3.10-12406962.iso",
 
     "winrm_user": "Administrator",
-    "winrm_password": "VMware1!"
+    "winrm_password": "VMware1!",
+
+    "centos8_vm_name": "packer-centos8-template",
+    "centos8_iso": "[sc2c01vsan01] ISO/CentOS-8.1.1911-x86_64-dvd1.iso",
+    "centos8_checksum": "3ee3f4ea1538e026fff763e2b284a6f20b259d91d1ad5688f5783a67d279423b",
+
+    "centos7_vm_name": "packer-centos7-template",
+    "centos7_iso": "[sc2c01vsan01] ISO/CentOS-7-x86_64-DVD-1908.iso",
+    "centos7_checksum": "9bba3da2876cb9fcf6c28fb636bcbd01832fe6d84cd7445fa58e44e569b3b4fe"
 }

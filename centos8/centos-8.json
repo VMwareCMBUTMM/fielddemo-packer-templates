@@ -1,0 +1,58 @@
+
+{
+    "sensitive-variables": ["vcenter_password","ssh_password"],
+    "builders": [
+        {
+            "type": "vsphere-iso",
+            "vcenter_server":      "{{user `vcenter_server`}}",
+            "username":            "{{user `vcenter_username`}}",
+            "password":            "{{user `vcenter_password`}}",
+            "insecure_connection": "true",
+            "datastore": "{{user `vcenter_datastore`}}",
+            "folder": "{{user `vcenter_folder`}}",
+            "host":     "{{user `vcenter_host`}}",
+            "convert_to_template": "true",
+            "create_snapshot": "true",
+            "cluster": "{{user `vcenter_cluster`}}",
+            "network": "{{user `vcenter_network`}}",
+            "boot_order": "disk,cdrom",
+            "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer.",
+            "guest_os_type": "centos8_64Guest",
+
+            "vm_name": "{{ user `centos8_vm_name` }}",
+            "CPUs":             2,
+            "RAM":              2048,
+            "RAM_reserve_all": false,
+            "disk_controller_type":  "pvscsi",
+            "disk_size":        20480,
+            "disk_thin_provisioned": true,
+            "network_card": "vmxnet3", 
+
+            "ssh_password": "{{ user `ssh_password` }}",
+            "ssh_username": "{{ user `ssh_username` }}",
+
+            "iso_paths": [
+                "{{user `centos8_iso`}}"
+            ],
+            "iso_checksum": "{{user `centos8_checksum`}}",
+            "iso_checksum_type": "sha256",
+            "floppy_files": [
+                "{{template_dir}}/ks.cfg"
+            ],
+            "boot_wait": "10s",
+            "boot_command": [
+                "<esc>",
+                "<wait>linux inst.ks=hd:/dev/fd0:ks.cfg<enter>"
+            ]
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "execute_command": "echo '{{user `ssh_password`}}'|{{.Vars}} sudo -S -E bash '{{.Path}}'",
+            "scripts": [
+                "../scripts/centos8.sh"
+            ]
+        }
+    ]
+}
