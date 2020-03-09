@@ -8,3 +8,7 @@ packer
 packer.1.3.5
 *.tfstate.backup
 *.tfstate
+*/.terraform/
+
+*/lock.json
+*/.terraform.tfstate.lock.info
