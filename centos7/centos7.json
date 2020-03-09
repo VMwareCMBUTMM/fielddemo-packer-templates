@@ -10,7 +10,7 @@
         "folder": "{{user `vcenter_folder`}}",
         "host":     "{{user `vcenter_host`}}",
         "convert_to_template": "true",
-        "create_snapshot": "true",
+        "create_snapshot": "false",
         "cluster": "{{user `vcenter_cluster`}}",
         "network": "{{user `vcenter_network`}}",
         "boot_order": "disk,cdrom",

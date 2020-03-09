@@ -24,29 +24,29 @@ resource "vra_image_profile" "packer-test" {
   region_id   = data.vra_region.this.id
 
   image_mapping {
-    name       = "packer-centos7-template"
+    name       = "CentOS7"
     image_name = "packer-centos7-template"
   }
 }
 
-resource "vra_deployment" "this" {
-  name        = "packer-test-deployment"
-  description = "Deployment to test packer build"
-  project_id  = data.vra_project.this.id
-}
+# resource "vra_deployment" "this" {
+#   name        = "packer-test-deployment"
+#   description = "Deployment to test packer build"
+#   project_id  = data.vra_project.this.id
+# }
 
 
-resource "vra_machine" "this" {
-  name          = "packer-centos-test"
-  description   = "Automated test of the Packer CentOS7 Build"
-  project_id    = data.vra_project.this.id
-  image         = "packer-centos7-template"
-  flavor        = "small"
-  deployment_id = vra_deployment.this.id
+# resource "vra_machine" "this" {
+#   name          = "packer-centos-test"
+#   description   = "Automated test of the Packer CentOS7 Build"
+#   project_id    = data.vra_project.this.id
+#   image         = "packer-centos7-template"
+#   flavor        = "small"
+#   deployment_id = vra_deployment.this.id
 
 
-  constraints {
-    mandatory  = true
-    expression = "cloud:vsphere"
-  }
-}
+#   constraints {
+#     mandatory  = true
+#     expression = "cloud:vsphere"
+#   }
+# }
