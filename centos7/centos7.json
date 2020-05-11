@@ -13,7 +13,7 @@
             "datastore": "{{user `vcenter_datastore`}}",
             "folder": "{{user `vcenter_folder`}}",
             "host": "{{user `vcenter_host`}}",
-            "convert_to_template": "true",
+            "convert_to_template": "false",
             "create_snapshot": "false",
             "cluster": "{{user `vcenter_cluster`}}",
             "network": "{{user `vcenter_network`}}",
@@ -55,9 +55,11 @@
             "type": "shell",
             "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
             "scripts": [
-                "../scripts/centos7.sh",
-                "../scripts/install_ssh_keys.sh"
-            ]
+              "../scripts/install_ssh_keys.sh",
+              "../scripts/centos_configure_ssh.sh",
+              "../scripts/centos_update.sh",
+              "../scripts/centos_7.sh"
+          ]
         }
     ]
 }

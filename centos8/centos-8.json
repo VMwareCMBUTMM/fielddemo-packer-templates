@@ -13,8 +13,8 @@
             "datastore": "{{user `vcenter_datastore`}}",
             "folder": "{{user `vcenter_folder`}}",
             "host": "{{user `vcenter_host`}}",
-            "convert_to_template": "true",
-            "create_snapshot": "true",
+            "convert_to_template": "false",
+            "create_snapshot": "false",
             "cluster": "{{user `vcenter_cluster`}}",
             "network": "{{user `vcenter_network`}}",
             "boot_order": "disk,cdrom",
@@ -55,8 +55,10 @@
             "type": "shell",
             "execute_command": "echo '{{user `ssh_password`}}'|{{.Vars}} sudo -S -E bash '{{.Path}}'",
             "scripts": [
-                "../scripts/centos8.sh",
-                "../scripts/install_ssh_keys.sh"
+                "../scripts/install_ssh_keys.sh",
+                "../scripts/centos_configure_ssh.sh",
+                "../scripts/centos_update.sh",
+                "../scripts/centos_8.sh"
             ]
         }
     ]
