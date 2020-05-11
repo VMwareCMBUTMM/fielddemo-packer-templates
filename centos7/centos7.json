@@ -35,12 +35,17 @@
       ],
       "iso_checksum":           "{{user `centos7_checksum`}}",
       "iso_checksum_type":      "sha256",
-      "http_directory":         "centos/http/7",
+      "http_directory":         "http",
       "http_port_min":          8601,
       "http_port_max":          8610,
       "boot_command":           ["<up><wait><tab><wait> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"],
       "shutdown_command":       "echo '{{user `var_guest_password`}}' | sudo -S -E shutdown -P now",
       "remove_cdrom":           true
+    },
+    {
+        "type": "file",
+        "content": "../ssh/id_autotmm.pub",
+        "target": "~/id_autotmm.pub"
     }
   ],
   "provisioners": [
@@ -48,7 +53,8 @@
       "type":                   "shell",
       "execute_command":        "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
       "scripts": [
-                                "../scripts/centos7.sh"
+                                "../scripts/centos7.sh",
+                                "../scripts/install_ssh_keys.sh"
       ]
     }
   ]
