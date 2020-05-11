@@ -43,8 +43,8 @@
         },
         {
             "type": "file",
-            "content": "../ssh/id_autotmm.pub",
-            "target": "~/id_autotmm.pub"
+            "source": "../ssh/id_autotmm.pub",
+            "destination": "/tmp/id_autotmm.pub"
         }
     ],
     "provisioners": [
