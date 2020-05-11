@@ -35,11 +35,12 @@
             ],
             "iso_checksum": "{{user `centos8_checksum`}}",
             "iso_checksum_type": "sha256",
-            "http_directory": "http",
-            "http_port_min": 8601,
-            "http_port_max": 8610,
+            "floppy_files": [
+                "{{template_dir}}/http/ks.cfg"
+            ],
             "boot_command": [
-                "<up><wait><tab><wait> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+                "<esc><wait>",
+                "linux ks=hd:fd0:/ks.cfg<enter>"
             ],
             "shutdown_command": "echo '{{user `var_guest_password`}}' | sudo -S -E shutdown -P now",
             "remove_cdrom": "true"
