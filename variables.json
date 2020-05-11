@@ -1,7 +1,7 @@
 {
     "vcenter_server":       "sc2vc03.cmbu.local",
-    "vcenter_username":     "smcgeown@cmbu.local",
-    "vcenter_password":     "mdrn1jQ!",
+    "vcenter_username":     "administrator@vsphere.local",
+    "vcenter_password":     "VCPASS",
     "vcenter_datastore":    "sc2c01vsan01",
     "vcenter_folder":       "Templates",
     "vcenter_cluster":      "sc2c03-BCA",

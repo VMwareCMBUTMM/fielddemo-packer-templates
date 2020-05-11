@@ -12,3 +12,4 @@ packer.1.3.5
 
 */lock.json
 */.terraform.tfstate.lock.info
+variables.live.json
