@@ -13,7 +13,7 @@
             "datastore": "{{user `vcenter_datastore`}}",
             "folder": "{{user `vcenter_folder`}}",
             "host": "{{user `vcenter_host`}}",
-            "convert_to_template": "false",
+            "convert_to_template": "true",
             "create_snapshot": "false",
             "cluster": "{{user `vcenter_cluster`}}",
             "network": "{{user `vcenter_network`}}",

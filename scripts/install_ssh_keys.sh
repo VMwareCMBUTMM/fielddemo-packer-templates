@@ -1,6 +1,7 @@
 # Move the SSH key to Authorized Keys and ensure permissions
-mkdir -p ~/.ssh
-chmod 700 ~/.ssh
-cat /tmp/id_autotmm.pub > ~/.ssh/authorized_keys
-chmod 644 ~/.ssh/authorized_keys
-# rm ~/id_autotmm.pub
+mkdir -p /home/autotmm/.ssh
+chmod 700 /home/autotmm/.ssh
+cat /tmp/id_autotmm.pub > /home/autotmm/.ssh/authorized_keys
+chmod 644 /home/autotmm/.ssh/authorized_keys
+chown -R autotmm /home/autotmm/.ssh
+rm -rf /tmp/id_autotmm.pub
