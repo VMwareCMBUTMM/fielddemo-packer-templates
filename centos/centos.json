@@ -40,7 +40,7 @@
             "http_port_min": 8601,
             "http_port_max": 8605,
             "boot_command": [
-                "<up><wait><tab><wait> text ks=http://{{ user `docker_host` }}:{{ .HTTPPort }}/ks7.cfg<enter><wait>"
+                "<up><wait><tab><wait> text ks={{ user `centos7_ks` }}<enter><wait>"
             ],
             "shutdown_command": "echo '{{user `var_guest_password`}}' | sudo -S -E shutdown -P now",
             "remove_cdrom": true
@@ -81,7 +81,7 @@
             "http_port_min": 8601,
             "http_port_max": 8605,
             "boot_command": [
-                "<up><wait><tab><wait> text ks=http://{{ user `docker_host` }}:{{ .HTTPPort }}/ks8.cfg<enter><wait>"
+                "<up><wait><tab><wait> text ks={{ user `centos7_ks` }}<enter><wait>"
             ],
             "shutdown_command": "echo '{{user `var_guest_password`}}' | sudo -S -E shutdown -P now",
             "remove_cdrom": "true"
