@@ -1,0 +1,126 @@
+{
+    "sensitive-variables": [
+        "vcenter_password",
+        "ssh_password"
+    ],
+    "builders": [
+        {
+            "name": "CentOS7",
+            "type": "vsphere-iso",
+            "vcenter_server": "{{user `vcenter_server`}}",
+            "username": "{{user `vcenter_username`}}",
+            "password": "{{user `vcenter_password`}}",
+            "insecure_connection": "true",
+            "datastore": "{{user `vcenter_datastore`}}",
+            "folder": "{{user `vcenter_folder`}}",
+            "host": "{{user `vcenter_host`}}",
+            "convert_to_template": "true",
+            "create_snapshot": "false",
+            "cluster": "{{user `vcenter_cluster`}}",
+            "network": "{{user `vcenter_network`}}",
+            "boot_order": "disk,cdrom",
+            "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer.",
+            "guest_os_type": "centos7_64Guest",
+            "ssh_username": "{{user `ssh_username`}}",
+            "ssh_password": "{{user `ssh_password`}}",
+            "vm_name": "{{user `centos7_vm_name`}}",
+            "CPUs": "2",
+            "RAM": "2048",
+            "RAM_reserve_all": true,
+            "disk_controller_type": "pvscsi",
+            "disk_size": "20480",
+            "disk_thin_provisioned": true,
+            "network_card": "vmxnet3",
+            "iso_paths": [
+                "{{user `centos7_iso`}}"
+            ],
+            "iso_checksum": "{{user `centos7_checksum`}}",
+            "iso_checksum_type": "sha256",
+            "http_directory": "ks",
+            "http_port_min": 8601,
+            "http_port_max": 8605,
+            "boot_command": [
+                "<up><wait><tab><wait> text ks=http://{{ user `DOCKER_HOST` }}:{{ .HTTPPort }}/ks7.cfg<enter><wait>"
+            ],
+            "shutdown_command": "echo '{{user `var_guest_password`}}' | sudo -S -E shutdown -P now",
+            "remove_cdrom": true
+        },
+        {
+            "name": "CentOS8",
+            "type": "vsphere-iso",
+            "vcenter_server": "{{user `vcenter_server`}}",
+            "username": "{{user `vcenter_username`}}",
+            "password": "{{user `vcenter_password`}}",
+            "insecure_connection": "true",
+            "datastore": "{{user `vcenter_datastore`}}",
+            "folder": "{{user `vcenter_folder`}}",
+            "host": "{{user `vcenter_host`}}",
+            "convert_to_template": "true",
+            "create_snapshot": "false",
+            "cluster": "{{user `vcenter_cluster`}}",
+            "network": "{{user `vcenter_network`}}",
+            "boot_order": "disk,cdrom",
+            "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer.",
+            "guest_os_type": "centos8_64Guest",
+            "vm_name": "{{ user `centos8_vm_name` }}",
+            "CPUs": "2",
+            "RAM": "2048",
+            "RAM_reserve_all": false,
+            "disk_controller_type": "pvscsi",
+            "disk_size": "20480",
+            "disk_thin_provisioned": true,
+            "network_card": "vmxnet3",
+            "ssh_password": "{{ user `ssh_password` }}",
+            "ssh_username": "{{ user `ssh_username` }}",
+            "iso_paths": [
+                "{{user `centos8_iso`}}"
+            ],
+            "iso_checksum": "{{user `centos8_checksum`}}",
+            "iso_checksum_type": "sha256",
+            "http_directory": "ks",
+            "http_port_min": 8601,
+            "http_port_max": 8605,
+            "boot_command": [
+                "<up><wait><tab><wait> text ks=http://{{ user `DOCKER_HOST` }}:{{ .HTTPPort }}/ks8.cfg<enter><wait>"
+            ],
+            "shutdown_command": "echo '{{user `var_guest_password`}}' | sudo -S -E shutdown -P now",
+            "remove_cdrom": "true"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "../ssh/id_autotmm.pub",
+            "destination": "/tmp/id_autotmm.pub"
+        },
+        {
+            "type": "shell",
+            "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
+            "scripts": [
+                "../scripts/install_ssh_keys.sh",
+                "../scripts/centos_configure_ssh.sh",
+                "../scripts/centos_update.sh"
+            ]
+        },
+        {
+            "type": "shell",
+            "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
+            "scripts": [
+                "../scripts/centos_7.sh"
+            ],
+            "only": [
+                "CentOS7"
+            ]
+        },
+        {
+            "type": "shell",
+            "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
+            "scripts": [
+                "../scripts/centos_8.sh"
+            ],
+            "only": [
+                "CentOS8"
+            ]
+        }
+    ]
+}

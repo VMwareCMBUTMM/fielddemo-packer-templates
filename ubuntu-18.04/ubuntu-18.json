@@ -1,70 +1,70 @@
 {
-    "sensitive-variables": ["vcenter_password","ssh_password"],
+    "sensitive-variables": [
+        "vcenter_password",
+        "ssh_password"
+    ],
     "builders": [
-      {
-        "type": "vsphere-iso",
-        "vcenter_server":      "{{user `vcenter_server`}}",
-        "username":            "{{user `vcenter_username`}}",
-        "password":            "{{user `vcenter_password`}}",
-        "insecure_connection": "true",
-        "datastore": "{{user `vcenter_datastore`}}",
-        "folder": "{{user `vcenter_folder`}}",
-        "host":     "{{user `vcenter_host`}}",
-        "convert_to_template": "true",
-        "create_snapshot": "true",
-        "cluster": "{{user `vcenter_cluster`}}",
-        "network": "{{user `vcenter_network`}}",
-        "boot_order": "disk,cdrom",
-        "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer.",
-        "guest_os_type": "ubuntu64Guest",
-
-        "ssh_username": "{{user `ssh_username`}}",
-        "ssh_password": "{{user `ssh_password`}}",
-
-        "vm_name": "{{user `ubuntu_vm_name`}}",
-        "CPUs":             1,
-        "RAM":              1024,
-        "RAM_reserve_all": true,
-        "disk_controller_type":  "pvscsi",
-        "disk_size":        20480,
-        "disk_thin_provisioned": true,
-        "network_card": "vmxnet3",
-        
-        "iso_paths": [
-          "{{user `ubuntu1804_iso`}}"
-        ],
-        "iso_checksum": "{{user `ubuntu1804_checksum`}}",
-        "iso_checksum_type": "sha256",
-        "floppy_files": [
-          "{{template_dir}}/preseed.cfg"
-        ],
-        "boot_command": [
-          "<enter><wait><f6><wait><esc><wait>",
-          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-          "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-          "<bs><bs><bs>",
-          "/install/vmlinuz",
-          " initrd=/install/initrd.gz",
-          " priority=critical",
-          " locale=en_US",
-          " file=/media/preseed.cfg",
-          "<enter>"
-        ]
-      }
+        {
+            "type": "vsphere-iso",
+            "vcenter_server": "{{user `vcenter_server`}}",
+            "username": "{{user `vcenter_username`}}",
+            "password": "{{user `vcenter_password`}}",
+            "insecure_connection": "true",
+            "datastore": "{{user `vcenter_datastore`}}",
+            "folder": "{{user `vcenter_folder`}}",
+            "host": "{{user `vcenter_host`}}",
+            "convert_to_template": "true",
+            "create_snapshot": "true",
+            "cluster": "{{user `vcenter_cluster`}}",
+            "network": "{{user `vcenter_network`}}",
+            "boot_order": "disk,cdrom",
+            "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer.",
+            "guest_os_type": "ubuntu64Guest",
+            "ssh_username": "{{user `ssh_username`}}",
+            "ssh_password": "{{user `ssh_password`}}",
+            "vm_name": "{{user `ubuntu_vm_name`}}",
+            "CPUs": 1,
+            "RAM": 1024,
+            "RAM_reserve_all": true,
+            "disk_controller_type": "pvscsi",
+            "disk_size": 20480,
+            "disk_thin_provisioned": true,
+            "network_card": "vmxnet3",
+            "iso_paths": [
+                "{{user `ubuntu1804_iso`}}"
+            ],
+            "iso_checksum": "{{user `ubuntu1804_checksum`}}",
+            "iso_checksum_type": "sha256",
+            "floppy_files": [
+                "{{template_dir}}/preseed.cfg"
+            ],
+            "boot_command": [
+                "<enter><wait><f6><wait><esc><wait>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs>",
+                "/install/vmlinuz",
+                " initrd=/install/initrd.gz",
+                " priority=critical",
+                " locale=en_US",
+                " file=/media/preseed.cfg",
+                "<enter>"
+            ]
+        }
     ],
     "provisioners": [
-      {
-        "type": "shell",
-        "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
-        "scripts": [
-          "../scripts/ubuntu18.sh"
-        ]
-      }
+        {
+            "type": "shell",
+            "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
+            "scripts": [
+                "../scripts/ubuntu18.sh"
+            ]
+        }
     ]
-  }
+}
