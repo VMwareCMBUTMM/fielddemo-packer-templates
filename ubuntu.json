@@ -5,6 +5,7 @@
     ],
     "builders": [
         {
+            "name": "Ubuntu-1804",
             "type": "vsphere-iso",
             "vcenter_server": "{{user `vcenter_server`}}",
             "username": "{{user `vcenter_username`}}",
@@ -35,9 +36,9 @@
             ],
             "iso_checksum": "{{user `ubuntu1804_checksum`}}",
             "iso_checksum_type": "sha256",
-            "floppy_files": [
-                "{{template_dir}}/preseed.cfg"
-            ],
+            "http_directory": "http",
+            "http_port_min": 8601,
+            "http_port_max": 8605,
             "boot_command": [
                 "<enter><wait><f6><wait><esc><wait>",
                 "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
@@ -53,7 +54,7 @@
                 " initrd=/install/initrd.gz",
                 " priority=critical",
                 " locale=en_US",
-                " file=/media/preseed.cfg",
+                " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu18.cfg<wait>",
                 "<enter>"
             ]
         }
@@ -63,7 +64,7 @@
             "type": "shell",
             "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
             "scripts": [
-                "../scripts/ubuntu18.sh"
+                "{{template_dir}}/scripts/ubuntu18.sh"
             ]
         }
     ]

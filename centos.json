@@ -36,7 +36,7 @@
             ],
             "iso_checksum": "{{user `centos7_checksum`}}",
             "iso_checksum_type": "sha256",
-            "http_directory": "ks",
+            "http_directory": "http",
             "http_port_min": 8601,
             "http_port_max": 8605,
             "boot_command": [
@@ -77,7 +77,7 @@
             ],
             "iso_checksum": "{{user `centos8_checksum`}}",
             "iso_checksum_type": "sha256",
-            "http_directory": "ks",
+            "http_directory": "http",
             "http_port_min": 8601,
             "http_port_max": 8605,
             "boot_command": [
