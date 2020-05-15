@@ -89,8 +89,6 @@
             "iso_paths": [
                 "{{user `ubuntu1910_iso`}}"
             ],
-            "iso_checksum": "{{user `ubuntu1910_checksum`}}",
-            "iso_checksum_type": "sha256",
             "http_directory": "http",
             "http_port_min": 8601,
             "http_port_max": 8610,
