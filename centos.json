@@ -40,7 +40,7 @@
             "http_port_min": 8601,
             "http_port_max": 8605,
             "boot_command": [
-                "<up><wait><tab><wait> text ks={{ user `centos7_ks` }}<enter><wait>"
+                "<up><wait><tab><wait> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks7.cfg<enter><wait>"
             ],
             "shutdown_command": "echo '{{user `var_guest_password`}}' | sudo -S -E shutdown -P now",
             "remove_cdrom": true
@@ -81,7 +81,7 @@
             "http_port_min": 8601,
             "http_port_max": 8605,
             "boot_command": [
-                "<up><wait><tab><wait> text ks={{ user `centos7_ks` }}<enter><wait>"
+                "<up><wait><tab><wait> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks8.cfg<enter><wait>"
             ],
             "shutdown_command": "echo '{{user `var_guest_password`}}' | sudo -S -E shutdown -P now",
             "remove_cdrom": "true"
@@ -90,23 +90,23 @@
     "provisioners": [
         {
             "type": "file",
-            "source": "../ssh/id_autotmm.pub",
+            "source": "{{ template_dir }}/ssh/id_autotmm.pub",
             "destination": "/tmp/id_autotmm.pub"
         },
         {
             "type": "shell",
             "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
             "scripts": [
-                "../scripts/install_ssh_keys.sh",
-                "../scripts/centos_configure_ssh.sh",
-                "../scripts/centos_update.sh"
+                "{{ template_dir }}/scripts/install_ssh_keys.sh",
+                "{{ template_dir }}/scripts/centos_configure_ssh.sh",
+                "{{ template_dir }}/scripts/centos_update.sh"
             ]
         },
         {
             "type": "shell",
             "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
             "scripts": [
-                "../scripts/centos_7.sh"
+                "{{ template_dir }}/scripts/centos_7.sh"
             ],
             "only": [
                 "CentOS7"
@@ -116,7 +116,7 @@
             "type": "shell",
             "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
             "scripts": [
-                "../scripts/centos_8.sh"
+                "{{ template_dir }}/scripts/centos_8.sh"
             ],
             "only": [
                 "CentOS8"
