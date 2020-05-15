@@ -19,7 +19,7 @@
 
     "ubuntu1910_vm_name":       "packer-ubuntu1910-template",
     "ubuntu1910_iso":       "[sc2c01vsan01] ISO/ubuntu-19.10-server-amd64.iso",
-    "ubuntu1910_checksum":  "3fe242f4b330ead8191b3c200bcf1d8d3be4243d62fe6b866a778499370c9dbb",
+    "ubuntu1910_checksum":  "921fd8b271c04aa86a321cc35b40e677f9b85f7903bf2204efb2389b0f0a64c1",
 
     "ubuntu2004_vm_name":       "packer-ubuntu2004-template",
     "ubuntu2004_iso":       "[sc2c01vsan01] ISO/ubuntu-20.04-live-server-amd64.iso",
