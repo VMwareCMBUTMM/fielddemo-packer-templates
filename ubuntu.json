@@ -113,7 +113,7 @@
                 " locale=en_US.UTF-8<wait>",
                 " grub-installer/bootdev=/dev/sda<wait>",
                 " noapic<wait>",
-                " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu18.cfg<wait>",
+                " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu19.cfg<wait>",
                 " -- <wait>",
                 "<enter><wait>"
             ],
