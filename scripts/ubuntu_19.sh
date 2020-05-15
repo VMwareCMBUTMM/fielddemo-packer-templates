@@ -1,7 +1,9 @@
-yum install -y cloud-init perl open-vm-tools bash-completion yum-utils
-cloud-init clean
-yum clean all
 
+# Remove temporary files
+rm -rf /tmp/*
+
+
+mv /etc/motd /etc/motd-backup
 cat << MOTD > /etc/motd
                   ╓╦╦╖
                 ╦╬╜  ╙╬╦
@@ -17,7 +19,7 @@ cat << MOTD > /etc/motd
      ╚╬╦╓╬╩╙ ╔╬╨    ╓╬╩  ╔╬╨    ╓╬╩─      / ___ \\ |_| | || (_) | | | | | | (_| | |_| | (_) | | | |
        ╙╩  ╦╬╜    ╓╬╩  ╦╬╜    ╓╬╩        /_/   \\_\\__,_|\\__\\___/|_| |_| |_|\\__,_|\\__|_|\\___/|_| |_|
          ╘╬╬    ╔╬╨ ╓╦╩     ╔╬╨
-           ╙╬╦╦╩╜ ╓╬╩     ╦╬╜            Code Stream Packer Build - CentOS 7
+           ╙╬╦╦╩╜ ╓╬╩     ╦╬╜            Code Stream Packer Build - Ubuntu 19.10
                 ╔╬╩    ╓╦╩╙
                 ╩╬╖  ╓╬╩
                   ╙╩╩╨
