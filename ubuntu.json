@@ -76,7 +76,7 @@
             "boot_order": "disk,cdrom",
             "boot_wait": "10s",
             "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer.",
-            "guest_os_type": "ubuntu-64",
+            "guest_os_type": "ubuntu64Guest",
             "ssh_username": "{{user `ssh_username`}}",
             "ssh_password": "{{user `ssh_password`}}",
             "vm_name": "{{user `ubuntu1910_vm_name`}}",
