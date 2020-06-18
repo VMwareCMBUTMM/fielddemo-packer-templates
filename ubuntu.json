@@ -54,7 +54,7 @@
                 " initrd=/install/initrd.gz",
                 " priority=critical",
                 " locale=en_US",
-                " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu18.cfg<wait>",
+                " preseed/url={{user `http_server`}}/ubuntu18.cfg<wait>",
                 "<enter>"
             ],
             "remove_cdrom": true
@@ -97,24 +97,22 @@
                 "<esc><wait>",
                 "<esc><wait>",
                 "<enter><wait>",
-                "/install/vmlinuz<wait>",
-                " auto<wait>",
-                " console-setup/ask_detect=false<wait>",
-                " console-setup/layoutcode=us<wait>",
-                " console-setup/modelcode=pc105<wait>",
-                " debconf/frontend=noninteractive<wait>",
-                " debian-installer=en_US.UTF-8<wait>",
-                " fb=false<wait>",
-                " initrd=/install/initrd.gz<wait>",
-                " kbd-chooser/method=us<wait>",
-                " keyboard-configuration/layout=USA<wait>",
-                " keyboard-configuration/variant=USA<wait>",
-                " locale=en_US.UTF-8<wait>",
-                " grub-installer/bootdev=/dev/sda<wait>",
-                " noapic<wait>",
-                " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu19.cfg<wait>",
-                " -- <wait>",
-                "<enter><wait>"
+                "/install/vmlinuz",
+                " initrd=/install/initrd.gz ",
+                "auto=true ",
+                "url={{user `http_server`}}/ubuntu19.cfg ",
+                "fb=false ",
+                "auto=true ",
+                "language=en ",
+                "locale=en_US ",
+                "priority=critical ",
+                "keymap=us ",
+                "netcfg/get_hostname={{ .Name }} ",
+                "netcfg/get_domain=vm ",
+                "debconf/frontend=noninteractive ",
+                "console-setup/ask_detect=false ",
+                "console-keymaps-at/keymap=us ",
+                "<enter>"
             ],
             "remove_cdrom": true
         },
@@ -155,7 +153,7 @@
             "http_port_max": 8610,
             "boot_command": [
                 "<enter><enter><f6><esc><wait> ",
-                "autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ubuntu20/",
+                "autoinstall ds=nocloud-net;s={{user `http_server`}}/ubuntu20/",
                 "<enter>"
             ],
             "remove_cdrom": true

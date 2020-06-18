@@ -6,9 +6,11 @@
     "vcenter_folder":       "Templates",
     "vcenter_cluster":      "sc2c03-BCA",
     "vcenter_network":      "Mgmt VMs",
-    
+
     "ssh_username":         "autotmm",
     "ssh_password":         "VMware1!",
+
+    "http_server":         "https://raw.githubusercontent.com/sammcgeown/vsphere-packer-templates/master/http",
 
     "winrm_user": "Administrator",
     "winrm_password": "VMware1!",

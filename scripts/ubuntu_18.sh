@@ -1,9 +1,6 @@
 
 # Remove temporary files
 rm -rf /tmp/*
-
-
-mv /etc/motd /etc/motd-backup
 cat << MOTD > /etc/motd
                   ╓╦╦╖
                 ╦╬╜  ╙╬╦
