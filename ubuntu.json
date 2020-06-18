@@ -36,9 +36,6 @@
             ],
             "iso_checksum": "{{user `ubuntu1804_checksum`}}",
             "iso_checksum_type": "sha256",
-            "http_directory": "http",
-            "http_port_min": 8601,
-            "http_port_max": 8610,
             "boot_command": [
                 "<enter><wait><f6><wait><esc><wait>",
                 "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
@@ -90,9 +87,6 @@
             "iso_paths": [
                 "{{user `ubuntu1910_iso`}}"
             ],
-            "http_directory": "http",
-            "http_port_min": 8601,
-            "http_port_max": 8610,
             "boot_command": [
                 "<esc><wait>",
                 "<esc><wait>",
@@ -107,7 +101,7 @@
                 "locale=en_US ",
                 "priority=critical ",
                 "keymap=us ",
-                "netcfg/get_hostname={{ .Name }} ",
+                "netcfg/get_hostname=ubuntu1910 ",
                 "netcfg/get_domain=vm ",
                 "debconf/frontend=noninteractive ",
                 "console-setup/ask_detect=false ",
@@ -135,6 +129,7 @@
             "guest_os_type": "ubuntu64Guest",
             "ssh_username": "{{user `ssh_username`}}",
             "ssh_password": "{{user `ssh_password`}}",
+            "ssh_handshake_attempts": "20",
             "vm_name": "{{user `ubuntu2004_vm_name`}}",
             "CPUs": "2",
             "RAM": "2048",
@@ -148,9 +143,6 @@
             ],
             "iso_checksum": "{{user `ubuntu2004_checksum`}}",
             "iso_checksum_type": "sha256",
-            "http_directory": "http",
-            "http_port_min": 8601,
-            "http_port_max": 8610,
             "boot_command": [
                 "<enter><enter><f6><esc><wait> ",
                 "autoinstall ds=nocloud-net;s={{user `http_server`}}/ubuntu20/",
