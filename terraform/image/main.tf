@@ -1,3 +1,9 @@
+terraform {
+  required_providers {
+    vra = ">= 0.2.3"
+  }
+}
+
 provider vra {
   url           = var.vra_url
   refresh_token = var.vra_refresh_token
@@ -17,17 +23,23 @@ data "vra_project" "this" {
   name = "Development"
 }
 
-data "vra_image" "centos7" {
-  filter = "name eq 'packer-centos7-template'"
+data "vra_image" "packer_images" {
+  for_each = toset(var.images)
+
+  filter = "name eq '${each.value}'"
 }
 
-resource "vra_image_profile" "packer-test" {
-  name        = "packer-test-profile"
-  description = "Packer Test Image Profile"
+resource "vra_image_profile" "packer_image_profiles" {
+  name        = "packer-image-profile"
   region_id   = data.vra_region.this.id
 
-  image_mapping {
-    name       = "[Packer] CentOS7"
-    image_id = data.vra_image.centos7.id
+  dynamic "image_mapping" {
+    for_each = data.vra_image.packer_images
+
+    content {
+      name       = "[Packer] ${image_mapping.value.name}"
+      image_id   = image_mapping.value.id
+    }
   }
 }
+
