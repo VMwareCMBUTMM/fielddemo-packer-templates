@@ -17,6 +17,9 @@ data "vra_project" "this" {
   name = "Development"
 }
 
+data "vra_image" "centos7" {
+  filter = "name eq 'packer-centos7-template'"
+}
 
 resource "vra_image_profile" "packer-test" {
   name        = "packer-test-profile"
@@ -24,29 +27,7 @@ resource "vra_image_profile" "packer-test" {
   region_id   = data.vra_region.this.id
 
   image_mapping {
-    name       = "CentOS7"
-    image_name = "packer-centos7-template"
+    name       = "[Packer] CentOS7"
+    image_id = data.vra_image.centos7.id
   }
 }
-
-# resource "vra_deployment" "this" {
-#   name        = "packer-test-deployment"
-#   description = "Deployment to test packer build"
-#   project_id  = data.vra_project.this.id
-# }
-
-
-# resource "vra_machine" "this" {
-#   name          = "packer-centos-test"
-#   description   = "Automated test of the Packer CentOS7 Build"
-#   project_id    = data.vra_project.this.id
-#   image         = "packer-centos7-template"
-#   flavor        = "small"
-#   deployment_id = vra_deployment.this.id
-
-
-#   constraints {
-#     mandatory  = true
-#     expression = "cloud:vsphere"
-#   }
-# }

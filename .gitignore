@@ -8,8 +8,9 @@ packer
 packer.1.3.5
 *.tfstate.backup
 *.tfstate
-*/.terraform/
+*/.terraform/*
 
-*/lock.json
-*/.terraform.tfstate.lock.info
+lock.json
 variables.live.json
+terraform/centos7/image/.terraform/plugins/darwin_amd64/lock.json
+terraform/*/.terraform/

@@ -15,26 +15,26 @@
     "winrm_user": "Administrator",
     "winrm_password": "VMware1!",
 
-    "ubuntu1804_vm_name":   "pkr-ubuntu1804-template",
+    "ubuntu1804_vm_name":   "packer-ubuntu1804-template",
     "ubuntu1804_iso":       "[sc2c02vsan01] iso/ubuntu-18.04.3-server-amd64.iso",
     "ubuntu1804_checksum":  "7d8e0055d663bffa27c1718685085626cb59346e7626ba3d3f476322271f573e",
 
-    "ubuntu1910_vm_name":   "pkr-ubuntu1910-template",
+    "ubuntu1910_vm_name":   "packer-ubuntu1910-template",
     "ubuntu1910_iso":       "[sc2c02vsan01] iso/ubuntu-19.10-server-amd64.iso",
     "ubuntu1910_checksum":  "921fd8b271c04aa86a321cc35b40e677f9b85f7903bf2204efb2389b0f0a64c1",
 
-    "ubuntu2004_vm_name":   "pkr-ubuntu2004-template",
+    "ubuntu2004_vm_name":   "packer-ubuntu2004-template",
     "ubuntu2004_iso":       "[sc2c02vsan01] iso/ubuntu-18.04.3-server-amd64.iso",
     "ubuntu2004_checksum":  "caf3fd69c77c439f162e2ba6040e9c320c4ff0d69aad1340a514319a9264df9f",
 
-    "windows_2016_vm_name": "pkr-win2016-template",
+    "windows_2016_vm_name": "packer-win2016-template",
     "windows_2016_iso":     "[sc2c02vsan01] iso/en_windows_server_2016_x64_dvd_9327751.iso",
 
-    "centos7_vm_name":      "pkr-centos7-template",
+    "centos7_vm_name":      "packer-centos7-template",
     "centos7_iso":          "[sc2c02vsan01] iso/CentOS-7-x86_64-DVD-2003.iso",
     "centos7_checksum":     "087a5743dc6fd6706d9b961b8147423ddc029451b938364c760d75440eb7be14",
 
-    "centos8_vm_name":      "pkr-centos8-template",
+    "centos8_vm_name":      "packer-centos8-template",
     "centos8_iso":          "[sc2c02vsan01] iso/CentOS-8.2.2004-x86_64-dvd1.iso",
     "centos8_checksum":     "c87a2d81d67bbaeaf646aea5bedd70990078ec252fc52f5a7d65ff609871e255"
 }
