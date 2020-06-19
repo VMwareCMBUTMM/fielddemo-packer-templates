@@ -28,7 +28,7 @@
                     "network_card": "vmxnet3"
                 }
             ],
-            "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer.",
+            "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer @ {{isotime \"2006-01-02 03:04\"}}.",
             "password": "{{user `vcenter_password`}}",
             "remove_cdrom": true,
             "shutdown_command": "echo '{{user `var_guest_password`}}' | sudo -S -E shutdown -P now",
@@ -73,7 +73,7 @@
                     "network_card": "vmxnet3"
                 }
             ],
-            "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer.",
+            "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer @ {{isotime \"2006-01-02 03:04\"}}.",
             "password": "{{user `vcenter_password`}}",
             "remove_cdrom": "true",
             "shutdown_command": "echo '{{user `var_guest_password`}}' | sudo -S -E shutdown -P now",
@@ -133,7 +133,7 @@
                     "network_card": "vmxnet3"
                 }
             ],
-            "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer.",
+            "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer @ {{isotime \"2006-01-02 03:04\"}}.",
             "password": "{{user `vcenter_password`}}",
             "remove_cdrom": true,
             "ssh_password": "{{user `ssh_password`}}",
@@ -195,7 +195,7 @@
                     "network_card": "vmxnet3"
                 }
             ],
-            "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer.",
+            "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer @ {{isotime \"2006-01-02 03:04\"}}.",
             "password": "{{user `vcenter_password`}}",
             "remove_cdrom": true,
             "ssh_password": "{{user `ssh_password`}}",
@@ -241,7 +241,7 @@
                     "network_card": "vmxnet3"
                 }
             ],
-            "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer.",
+            "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer @ {{isotime \"2006-01-02 03:04\"}}.",
             "password": "{{user `vcenter_password`}}",
             "remove_cdrom": true,
             "ssh_handshake_attempts": "20",
