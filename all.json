@@ -88,7 +88,7 @@
             "type": "vsphere-iso",
             "username": "{{user `vcenter_username`}}",
             "vcenter_server": "{{user `vcenter_server`}}",
-            "vm_name": "{{ user `centos8_vm_name` }}"
+            "vm_name": "{{ user `centos8_vm_name` }}-{{user `BUILDTIME`}}"
         },
         {
             "CPUs": "2",
@@ -147,7 +147,7 @@
             "type": "vsphere-iso",
             "username": "{{user `vcenter_username`}}",
             "vcenter_server": "{{user `vcenter_server`}}",
-            "vm_name": "{{user `ubuntu1804_vm_name`}}"
+            "vm_name": "{{user `ubuntu1804_vm_name`}}-{{user `BUILDTIME`}}"
         },
         {
             "CPUs": "2",
@@ -209,7 +209,7 @@
             "type": "vsphere-iso",
             "username": "{{user `vcenter_username`}}",
             "vcenter_server": "{{user `vcenter_server`}}",
-            "vm_name": "{{user `ubuntu1910_vm_name`}}"
+            "vm_name": "{{user `ubuntu1910_vm_name`}}-{{user `BUILDTIME`}}"
         },
         {
             "CPUs": "2",
@@ -256,7 +256,7 @@
             "type": "vsphere-iso",
             "username": "{{user `vcenter_username`}}",
             "vcenter_server": "{{user `vcenter_server`}}",
-            "vm_name": "{{user `ubuntu2004_vm_name`}}"
+            "vm_name": "{{user `ubuntu2004_vm_name`}}-{{user `BUILDTIME`}}"
         }
     ],
     "provisioners": [
