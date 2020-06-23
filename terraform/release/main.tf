@@ -42,4 +42,3 @@ resource "vra_image_profile" "packer_image_profiles" {
     }
   }
 }
-
