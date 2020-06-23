@@ -29,8 +29,8 @@ data "vra_image" "packer_images" {
   filter = "name eq '${each.value}'"
 }
 
-resource "vra_image_profile" "packer_image_profiles" {
-  name        = "packer-image-profile"
+resource "vra_image_profile" "packer_test_image_profiles" {
+  name        = "packer-test-image-profile"
   region_id   = data.vra_region.this.id
 
   dynamic "image_mapping" {
