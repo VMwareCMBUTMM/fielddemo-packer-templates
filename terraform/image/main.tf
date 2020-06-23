@@ -37,7 +37,7 @@ resource "vra_image_profile" "packer_image_profiles" {
     for_each = data.vra_image.packer_images
 
     content {
-      name       = "[Packer] ${image_mapping.value.name}"
+      name       = "[Packer Test] ${image_mapping.value.name}"
       image_id   = image_mapping.value.id
     }
   }

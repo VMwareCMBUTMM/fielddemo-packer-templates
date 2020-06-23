@@ -35,7 +35,7 @@ resource "vra_machine" "this" {
   name          = "${each.value}-test"
   description   = "Automated test of the ${each.value} Build"
   project_id    = data.vra_project.this.id
-  image         = "[Packer] ${each.value}"
+  image         = "[Packer Test] ${each.value}"
   flavor        = "small"
   deployment_id = vra_deployment.this.id
 
