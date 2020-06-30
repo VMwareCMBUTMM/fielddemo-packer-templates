@@ -1,0 +1,51 @@
+[
+    {
+        "project": "Field Demo",
+        "name": "Packer-Build-vRA-Url",
+        "description": "",
+        "type": "REGULAR",
+        "value": "https://wdc-fd-vra8-01.cmbu.local"
+    },
+    {
+        "project": "Field Demo",
+        "name": "Packer-Build-vRA-Username",
+        "description": "",
+        "type": "REGULAR",
+        "value": "configuser"
+    },
+    {
+        "project": "Field Demo",
+        "name": "Packer-Build-vRA-Password",
+        "description": "",
+        "type": "SECRET",
+        "value": "*******"
+    },
+    {
+        "project": "Field Demo",
+        "name": "Packer-Build-vCenter-Server",
+        "description": "",
+        "type": "REGULAR",
+        "value": "sc2vc03.cmbu.local"
+    },
+    {
+        "project": "Field Demo",
+        "name": "Packer-Build-Git-Repository",
+        "description": "Git Repository for Packer Builds",
+        "type": "REGULAR",
+        "value": "https://github.com/VMwareCMBUTMM/fielddemo-packer-templates.git"
+    },
+    {
+        "project": "Field Demo",
+        "name": "Packer-Build-vCenter-User",
+        "description": "vCenter User for Packer Builds",
+        "type": "REGULAR",
+        "value": "packer-builds@cmbu.local"
+    },
+    {
+        "project": "Field Demo",
+        "name": "Packer-Build-vCenter-User-Password",
+        "description": "vCenter Password for Packer Builds",
+        "type": "SECRET",
+        "value": "********"
+    }
+]
