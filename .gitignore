@@ -4,3 +4,4 @@ packer_cache/
 **/.terraform
 variables.live.json
 **/terraform.plan
+terraform/tf.variables.sh

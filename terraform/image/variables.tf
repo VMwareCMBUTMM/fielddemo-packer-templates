@@ -8,3 +8,7 @@ variable vra_refresh_token {
 variable images {
   type = list(string)
 }
+
+variable vra_cloud_account {
+  type = string
+}

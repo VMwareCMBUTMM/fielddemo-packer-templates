@@ -11,7 +11,7 @@ provider vra {
 }
 
 data "vra_cloud_account_vsphere" "this" {
-  name = "sc2vc03.cmbu.local"
+  name = var.vra_cloud_account
 }
 
 data "vra_region" "this" {
@@ -20,7 +20,7 @@ data "vra_region" "this" {
 }
 
 data "vra_project" "this" {
-  name = "Development"
+  name = var.vra_project
 }
 
 resource "vra_deployment" "this" {

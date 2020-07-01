@@ -12,3 +12,11 @@ variable images {
 variable buildtime {
   type = string
 }
+
+variable vra_cloud_account {
+  type = string
+}
+
+variable vra_project {
+  type = string
+}

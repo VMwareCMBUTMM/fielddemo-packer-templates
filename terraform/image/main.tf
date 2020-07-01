@@ -11,16 +11,12 @@ provider vra {
 }
 
 data "vra_cloud_account_vsphere" "this" {
-  name = "sc2vc03.cmbu.local"
+  name = var.vra_cloud_account
 }
 
 data "vra_region" "this" {
   cloud_account_id = data.vra_cloud_account_vsphere.this.id
   region           = data.vra_cloud_account_vsphere.this.enabled_region_ids[0]
-}
-
-data "vra_project" "this" {
-  name = "Development"
 }
 
 data "vra_image" "packer_images" {
