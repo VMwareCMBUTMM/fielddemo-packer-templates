@@ -38,12 +38,6 @@ resource "vra_machine" "this" {
   image         = "[Packer Test] ${each.value}"
   flavor        = "small"
   deployment_id = vra_deployment.this.id
-
-
-  constraints {
-    mandatory  = true
-    expression = "cloud:vsphere"
-  }
 }
 
 output "vmIps" {
