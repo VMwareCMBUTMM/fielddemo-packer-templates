@@ -1,0 +1,362 @@
+---
+project: Field Demo
+kind: PIPELINE
+name: Packer-Template-Builds
+icon: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAJYCAQAAAAwf0r7AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAAFUEAABVBAegIY9sAAAAHdElNRQfiAx0LBwlIQyQ5AAAdgElEQVR42u3dabDd9X3f8c9FaEGINQIcDEZIgIQAIYnFCIzANnTGWZpMO23czCSOx574gfug27SPmhk3M+1MJpnkQTvplsapE7vT1E6c2I7HJmZfba6QkITEIondgMxiFgmtfSAu1r3nShz9dM/5/f//83o99Yz5Xkn3vs9/+X3vrMBgnZNv5JP5SMbyevbWHgaYOWO1B6DzzskPsjwH8krGc08ez3ieFRLoAgFh0A4FZMK+PJcH8sM8lnV5OQdqDweUExAGbXJAJuzOk7k76/NoNuantUcESpxYewBG1LxcnsuTvJGNuTOP5ZE8md21hwKOhSsQBm36K5DJDuTlPJx7szUP5/nsqz0y0A8BYdD6CciEvXkm9+VHeSyPZGcO1h4dOBoBYdCOJSAT3snjuSsbsyGb82btLwCYnmcgNNH8rMzKHMzreTR3ZEvWZXverT0UMJkrEAat5Apksv35cX6Y+7M143kh+2t/QcAhAsKgHX9AJuzJjtyX8WzM+rzmCQnUJiAM2swFZMJb2ZI7sznrsyVv1/7yYHR5BkL7LMjVuToH82oeyd3ZknXZkT21h4LR4wqEQZv5K5DJ9ueFPJgHsiXr8mPLUWB4BIRBG3RAJrybp3JP1mdjHs3rnpDA4LmFRVfMzfIsT/JmNueubMojeTy7ag8FXSYgdM0p+Wg+moPvrY/fan08DIpbWAzasG5hTc/6eBgYAWHQ6gZkwu48mTuzIRutj4eZ4hYWo8H6eJhxrkAYtGZcgUw2sT5+S8atj4dSAsKgNTEgE/bm6dxvfTyUERAGrckBmfCz9fGb8lbtYaAtPAOBw9fHr89d1sdDf1yBMGhtuAKZzPp46IuAMGjtC8iEQ+vjH87GbLA+HnoJCIPW3oBMsD4epuUZCHyQw9fH35WtGc8Oy1HAFQiD1/4rkMn25/k8mAetjwcBYdC6FpAJ1scz8tzCgjKHr4+/I5vzSJ6wPp7RIiBwfA6tjz+QndbHM2rcwmLQunoLa3oT6+M3Zzw7PSGh2wSEQRutgEzYlSdyt/XxdJtbWDAIJ2VFViR5PZusj6erXIEwaKN5BTLZofXxh56QWB9PZwgIgyYgP2N9PJ0iIAyagPQ6tD7+0azPY9bH016egcDwTayPfy0brI+nvVyBMGiuQD6I9fG0lIAwaALSrz3ZkXsynk3Wx9MOAsKgCcixsj6elvAMBJpm8vr4LRnP05aj0ESuQBg0VyDHZ19eeG99/HheshyFJhEQBk1AZsbP1sdvyOu1h4HELSxoi5+tj9+UO/KY9fHUJyDQLqfkulxnfTxN4BYWg+YW1iAdWh//UDZnnfXxDJuAMGgCMgzWx1OBW1jQBVPXx6/LU9bHM2iuQBg0VyDDdyAv5Ue5z/p4BktAGDQBqcf6eAZKQBg0Aanv0Pr4DdlgfTwzyTMQ6D7r4xkIVyAMmiuQpplYH78l43nR+njKCQiDJiBNtSfbc0/WWR9PKbewYFTNydIsjfXxFBMQGHWHr4+/M1utj6dfbmExaG5htYv18fRNQBg0AWmnQ+vjH8mjeTRv1B6GZnILC5jOxPr4n763HMX6eHoICHA0p2ZN1kxaH/+M5Sgc4hYWg+YWVpfsy3O5Lw9lQx629RcBYdAEpIveyni+l/vzkNUoo0xAGDQB6a63cne+ne/nCccQR9Os2gPQeQvymZxVewgGYk4uzqfyizk3u/KSpSijR0AYNAHptrGckRvyq7kwb9msNWoEhEETkFFwUq7Kr2ZRXssLDh+ODgFh0ARkVMzL6vzDnJ3n80rtURgOAWHQBGSUzM+a3JpZeTLv1B6FwTuh9gBAx1ycP8hX8nEfT7vPXzGD5gpk9Izlovxi5meLUyLd5goEGISF+ff5s9zgrFmXCQgwGGP5B/k/+WJOrj0IgyIgwOCcl9/PH+QjtcdgMAQEGKS5+UL+NFfXHoNBEBBg0D6RP88v+2nTPf5KgcFbmj/JFzKn9hjMLK/xMmhe4yVJTs7NGcvD2VN7EGaOgDBoAsIhc/KxnJSHsrv2IMwUt7CAYZmdf5H/mJ+rPQYzRUAYPEfJmDArX8h/ysLaYzAz3MJi0E7I2Tktp2Z27UFohLGszum5L7tqD8LxExAGbU9+kK/nrjydlzMvC/ybG3ljWZUFuS/v1h6E4+XmAsNzYs7Ldbkmy7MqZ7l9OtL25w/yJSvf286nQYbnQF7Pxnwv38h3sjnP5d2clrm1h6KKE3JNducBv72w3VyBUM/puSw35dKszEWZV3sYhu7N/Mv8Se0hOB4CQm0n5OxcnRuyNFfl3JxYexyG6Mf5bL5bewjKCQhNMTsXZE2uzqVZmYX+ZY6ITfnNjNceglK+TWma+bkkN+WKrMilWVB7GAbue/l8nq09BGUEhGYayxlZkbW5NCtzoUftnfZf82/ydu0hKOEtrKZZloN2BSVJdmVH7sxf5xu5P8/k1SzIyV797aQV2ZkHaw9BCVcgTfPdnJXbszHrs9Vb8oeZmwtzQ1blsqzIGf7ddsyL+fXcUXsIjp1vxKa5N9cnOZideSR3Z2vG83T21h6qQRZkWW7K5bkySzO/9jDMmDvzmTxdewiOlYA0zaGATNiXF/JAHsxjWZeXHbp631gWZmVuzNKszgW2bHXCH+Xf+V0hbSMgTTM5IBN258nck/XZmEfzRu0RG+TEnJvrcm2WZXXO8YSk1d7OZ/OXtYfg2AhI09yXNUf5X3+aTbkzj2VdnvCo/TDzsiQ35spcnityWu1hKLQun87jtYfgWAhI0xw9IIccyCt5OPdka9bl2eyrPXKDnPr+cpSLc1LtYThm/yX/ym2sNhGQpuknIBP25tncnx/lsazLTk9I3ndCFubqfCyXZHXOtxylRd7Kb+Svaw9B/wSkaY4lIBN25YnclQ3ZkM15s/YX0CCzc37W5Oosz8os9ISkFe7JP8tztYegXwLSNCUBOeRgXs+juStbsi7bPCE5zPxclLVZkRVZnlNqD8MH+J38bu0R6JeANE15QCYcyEv5Ue7N1jycF7K/9hfUGGM5PVfkpizNqiyxHKWxnss/zkO1h6A/AtI09+e6Gfp/2psduTfj2ZT1eTUHa39hjXFCzsnVuSHLsjrnWubTQH+SL/p1t+0gIE0zcwGZ8Ha25q5szIY8lrdqf3kNMieLcn1W57JcmTN9JzTIW/l0vl17CPrh26ZpZj4ghxzMa9nw3hmSHV6VPMzJWZq1uTxX5tKcXHsYkiR/k990YLYNBKRpBhWQCfvzYh7KA9mS8fzYE5L3jeXMrMyNWZZVWZQ5tccZcXvy2Xy19hB8MAFpmkEHZMK72Z57sy6bsj6ve0Lyvlk5N9fmuizN6vy8V3+r+UF+LTtrD8EHEZCmGVZAJryZx3JnNlsfP8XcLM7HsjKX54qc7vtk6Pbn8/ly7SH4IL4xmmbYATnE+vgjOSXLszbLszKXWB8/VLfnn+QntYfg6ASkaR7IRyv+162Pn95YFmZV1mZpVud86+OHYl9+K39RewiOTkCapm5AJlgfP70Tc16uyzW5NKtytickA/bt/Hp+WnsIjkZAmqYZAZlgffz05uWi3Jgrc0Uuz6m1h+ms3fl0vll7CI5GQJqmWQE5xPr4Izktl7+3Pv6izKs9TAd9Ob/tiVyTCUjTNDEgE6yPn94JOTtXvbcc5cPWx8+gV/Mruaf2EByZgDRNkwMyYVeeyN1Zb338FLNzwXvr46/MQt9bM+J38zu1R+DI/CNvmjYE5BDr449kfi55bznK8iyoPUzLbcov5JnaQ3AkAtI0D+ba2iMco5+tjx/P85ajvG8sZ2TFe+vjL7Q+vtCBfM6BwuYSkKZpX0AmTKyP35xHrI8/zKx8KNdkTZZaH1/ka/ktyz+bSkCapr0BmWB9/PTmZFFuyK/kl50fOSY780t5sPYQTM8bI8y0k7M6q62P77Enj+fxvJRP2fV7TBbmYwLSVALCYIzlzNycm99bH39bNmZ7XvSEhAK35I8t+mwmAWGwZuW8nJdfze48k3vz93kyT1ofzzG5LqudBmkmAWmabj6VOiHzsyzL8pm8na25Pfdme7b5VElfTs81AtJMAsIwnZjTcm2uzd68lvW5LePZnmcsq+AD3Jw/dtKoiQSEGmbn7NyaW/JuXspD+V4ey1PWx3NE1+XSrKs9BL0EhHrGMi8X5IL8o+zOjtydH2Rbnsrrtceicc7O1QLSRAJCfbNyci7LZfl83syW3J77sj3bs6v2WDTIFbUHYDoCQnOcmDOyJmuyJ69mPLflkWzPc9bHk2Rtzs7LtYdgKgGheebkQ/mFfCrv5oU8kNuyJdvySkeekHTzLbvBuzgrclvtIZhKQJrGD5gJY5mXxVmcX8uubMtduT3bss2vOB1R87NUQJpHQGi6WVmQFVmRL+TNbMrf58HsyA4vdY6c5bUHoJeA0Bazc2ZuzI3Zk515OLdlQ7ZZHz9CrskZea32EEwmILTNnJybc/NL2Z3ncm/+Pk/kqfzEcpTOW5Il+VHtIZhMQGinsZyUi3NxfiNv58ncmTuzI09ZH99hZ+RSAWkaAaHdZuXUrM7q/PO8kY25LT/M9jxtfXwHjWVh7RGYSkDohtlZmJtzU/bk5fzQ+vhOWlZ7AKYSkKbxGu/xGMvcnJ/zJ62PfyqveULSCZfmtLxRewgOJyB0kfXxXfSRfEhAmkVA6LLmrY93hVnu57I4W2sPweEEhFEweX3897PZ+vgWOimLa4/AZALC6LA+vt1mZUHtEZhMQBg91se31em1B2AyAWka98iHx/r4trmg9gBMJiDQ5fXx3XJe7QGYTEDgEOvjm++c2gMwmYDAZNbHN9cZtQdgMgGB6R2+Pn48X89XZ2jDlqdc5U6tPQCTCQgc3aH18efnW9lZe5SRN7f2AEx2Qu0BoBVm6rrB9QcdIiBN4wdMM1nHCD0EBIAiAgJAEQGB/riJBVMICABFBASAIgLSNN7CAlpCQAAoIiAAFBEQAIoICPRjpl7i9YyLDhEQAIoICABFBKRp3OIAWkJAACgiIAAUERAAiggIAEUEBPpjnTtMISAAFBGQpvEabzM5iQ49BASAIgICQBEBAaCIgABQREAAKCIgTeMtHaAlBASAIgICQBEBgX5YZAI9BASAIgICw+QlCTpEQKA/bmLBFALSND6hAi0hIAAUERAAiggIAEUEBIAiAgLD5TUJOkNAoB9e4oUeAtI0Pp8CLSEgMEw+INAhAgJAEQEBoIiAAFBEQAAoIiBN4yEr0BICAv1xEgSmEBDoh3xADwEBoIiAAFBEQAAoIiAwTN6yo0MEpGn8gAFaQkAAKCIgABQREACKCAgARQQE+uEkOvQQkKbxFhbQEgICQBEBAaCIgEB/ZuYpiFuUdIiAAFBEQAAoIiAAFBGQpnGPHGgJAYF+OEgIPQQEgCICAkARAQGgiIAAUERAYJi8ZUeHCEjT+AEDtISAAFBEQAAoIiDQH0cJYQoBgX7IB/QQEACKCEjTeAsLaAkBAaCIgMBwucakMwQEgCICAkARAYFhcgOLDhEQAIoICABFBKRp3OJoJifRoYeAAFBEQAAoIiAAFBEQ6I+nIDCFgABQREAAKCIgABQREBgm53zoEAFpGj9gmskjdOghIAAUERAAiggIAEUEBIAiAgJAEQEBoIiAAFBEQJrGORCgJQQE+jMzRwl9QKBDBAT64SQ69BAQAIoICABFBASAIgICQBEBAaCIgABQRECaxjkBoCUEBIAiAgL9cJAQeggIDJNblHSIgABQREAAKCIgABQREOiPx+gwhYA0jYesQEsICABFBASGyzUmnSEgABQREOiHR+jQQ0BgmNzAokMEBIAiAgJAEQFpGrc4gJYQEACKCAgARQQEgCICAkARAYF+OEgIPQQE+iMhMIWAAFBEQGCYnPOhQwSkafyAAVpCQAAoIiAAFBEQAIoICABFBASAIgIC/XCMEHoICABFBKRpnAMBWkJAYJh8QKBDBASAIgIC/fEYHaYQEACKCAgARQQEgCICAv3wBAR6CAgARQSkaZwTAFpCQAAoIiAwTK4w6RABAaCIgABQREAAKCIgABQREOiHg4TQQ0Caxls6QEsICAyXjwh0hoAAUERAACgiIAAUERAYJk9A6BABgf54kRemEBDoh3xADwFpGrc4gJYQEACKCAgARQQEgCICAkARAQGgiIBAP7zGCz0EBIbJa9p0iIAAUERAmsYnVKAlBASAIgICQBEBAaCIgABQRECgH86BQA8BAaCIgABQRECaxjmQbvP3S4cICABFBASAIgICQBEBgX54jRd6CAgARQQEgCICAkARAQGgiIA0jYNmQEsICABFBAT6MzMv8rrCpEMEBPrhHAj0EBAAiggIAEUEBIAiAgJAEQFpGm/pdJ2/YTpDQAAoIiDQD6/xQg8BAaCIgABQREBgmDxCp0MEBIAiAgJAEQEBoIiANI175EBLCAj0wzkQ6CEgABQREACKCAgARQQEgCICAsPkLTs6REAAKCIgTeMTajN5jRd6CAgARQQEgCICAkARAQGgiIAAUERAoD/ew4IpBASAIgLSNM6BNJPrD+ghIDBMPiDQIQICQBEBAaCIgABQREAAKCIgABQREOiH13ihh4AAUERAACgiIE3joBnQEgICw+QDAh0iIAAUERAAiggIAEUEBPrhHAj0EBAAiggIAEUEpGm85gm0hIAAUERAACgiIDBMblHSIQIC/fAaL/QQEACKCAjQFq4DG0ZAgLbYV3sAJhMQoC321h6AyQSkabylA0eyu/YATCYg0B/33+t7q/YATCYgQFu8UXsAJhMQ6IfrjyZ4pfYATCYgQFv8uPYATCYgMExekjgez9QegMkEBGiL12sPwGQCArTDgeyqPQKTCUjTuMUB09uVbbVHYDIBAdrhVQFpGgGBfniNt76n83ztEZhMQIB22OwgYdMICNAOm2sPwFQCArTBfscIm0dAgDZ4JY/WHoGpBASGyWvapTZmR+0RmEpAmsYPGJjOPXmn9ghMJSBA8+3P1toj0EtAoB/OgdT1TH5YewR6CQjQfHd4AtJEAgI03/3ZX3sEegkI0HTP5t7aIzAdAQGa7rseoTeTgADNti8/cAOrmQQEaLbx3F57BKYnIE3jIGEzzdRrvP5+j93X81LtEZiegMAwvZafZG/tIVrlmXyn9ggcyYm1B4CR8rfZmkVZm5tzUeZnVu1xWuCr2Vh7BI5EQGCY3skjeSTfzMIsztLckjX5cOa6E3BEL+brtUfgyAQEhu9gXskreTBfzYezKCtzS1ZnYebUHquBvpKHa4/AkQkI1LMvT+fp3Jn/lkVZlOvyyVyWU3xXvm97/sIWsibzTxX6M8gfZLuzJVvy3fxhlmRxbsraXOgJSZL/ng21R+BoBASa442MZzzfyFlZnGW5Jdfl5zNvZF/9vS9fqT0CRycgTTOqPyyabpg3Ug7kpbyU+/OVnJdFWZ1bsypnjNwTkrfzh3m+9hAcnYBAU+3LjuzIHfnjLM6iXJ+P59IsGJnv2f+Vv6k9Ah9kVP4xQnvtyqZsyrdzepZkSW7O2lyQkzr+hOSH+aPsqT0EH0RAoC1ez8N5OP8v5+TCXJZbc23OydxO3vT8Sf5DttUegg8mINAuB/JiXsx9+XI+kkW5KrfkypyR2bXHmkH78nvWl7RDFz+9tNubWVB7BKbxV/mn2Vd7iGnNz5Isyg35eJZmQSdubP2P/Ou8WXsI+uEKBNrtnTyaR/OtnJ4luSSfyA05Pye1eDnKt/Il+WgLVyBN4wqkmb6RX2voFchks/KhXJgrckuuydmZ07rv8HvyuTxeewj61bZ/Xt0nIM3UloBMmJMLsijX5JNZkdNa84TkR/mcs+dtIiBN81ZOrj0C02hbQCacnCVZnLW5KRfl5IY/IXkov531tYfgWHgGAl32djZkQ76Zn8viXJJP5vqcl3mNfEJyR76YzbWH4NgICHTfwezMzjyUr+XcXJgVuSVX56wGLUc5kK/n32ZH7TE4Vm5hNY1bWM3U1ltY05ubRbkwH80ncnlOrf4xclf+c34vO2v/oXDsBKRpBKSZuhWQCafkolyYm3JTFldbH789X8r/za7afxSUqP3ZA6jnzazLuvxVzsriXJJbsybnDnV9/N78bb6UR/3SqLYSEOhHl3/EHczLeTkP5Ks5L4uyKrdkdc4c+BOSg3kyv5+/zGu1v3zKuYXVNG5hNdPX8+kO3sKa3rwszgVZk09k+cB+we7L+dP8zzxZ+0vl+AhI07yd+bVHYBqjFJAJp2VJFufjWZtFM7g+/mBeztfyv7Mxe2t/gRwvt7CA6U38gt2zsziX5tZ8NB86zvXxe/Jk/jzfyhbx6AZXIE3jCqSZRvEKZLLZOT+Lsiq3ZmXBL9jdkxfz/XwrD+f5Tj9PGjEC0jQC0kwCMuGkLMlHcnWuz7IszOyjpmRf9ub1PJa78mCeyNP+BLvGLSzgWOzKxmzMdzIv5+bnc1oWZ3HOy1k5NfMzO2PZn3fzVl7NC9mex/NKXsqzebv20AyGgEA/3HaZane2vf9rZ2dlbuZlTmZlLAeyN+9md/b6M+s+AQGO1/68k3dqD8HwNXErJwAtICAAFBGQpvFeHNASAgJAEQEBoIiAQH+8lApTCAgARQQE+uH6A3oICABFBASAIgLSNM6BAC0hIAAUERAAiggIAEUEBIAiAgL9cA4EeggIAEUEBIAiAtI0zoEALSEgABQREACKCAgARQQE+uE1XughIAAUERAAiggIAEUEBIAiAtI0DhICLSEgABQREOiH13ihh4AAUERAACgiIAAUERAAiggIAEUEpGmcA2kq72HBFAICQBEBgX64/oAeAgJAEQEBoIiAAFBEQAAoIiAAFBEQAIoISNM4SAi0hIBAP5wDgR4CAkARAQGgiIAAUERAACgiIAAUERAAighI0zgH0kxe44UeAgJAEQEBoIiAAFBEQAAoIiAAFBEQAIoICPTDa7zQQ0CaxjkQoCUEBIAiAgJAEQEBoIiAQH88RocpBASAIgICQBEBgX64gQU9BASAIgLSNA4SAi0hIAAUERAAiggIAEUEBIAiAgJAEQGBfjgHAj0EBIAiAtI0zoEALSEgABQREACKCAgARQSkaQ7UHgCgP7NqD8AU27I+yemZ53F6ozySb9YeAZrGD6kmWpDLckWuyNpckvm1hyFJ8mf5rLMgMNmJtQdgGm/lwTyYsSzMyizLNVmTCzK79lAAkwlIcx3MK/l+vp8T8+FclWW5PlflbE+tgKYQkObbl6fzdJJ5uSirsixrc0VOqz0UgIC0x+5szMYkp+ayXJ4rc1MuyrzaQwGjS0Da56e5P/fnhJydVVmWa3NdzvP3CAyfHzxtdSA/zt/l7zI75+eqLM0NWZ2FnpAAwyMgbbc327ItyUm5OCtzedZmeU6pPVQHeYUXeghIV+zKhmzIWE7PFVmeVflYlmRu7aGALhOQbjmY13JX7soJOSerszRr8tGca98AMAgC0k0H8mK+nW9nThZldZbmxqzMmfYOADNJQLptTx7P40lOztJcmctyU5ZlQe2hWspTEJhCQEbD2xnPeMZyRq7M8lyd67Moc2oPBbSbgIySg3k1t+f2zMq57z0huSYf8oQEKCMgo2h/ns2zSebmwqzO0tyUFTndE5KjcgMLegjIKHs3W7IlySlZbn08cKwEhORN6+OBYycgTLA+HjgmAsJU1scDfREQjsT6eOCoBIQPYn08MC0/COiP9fHAFALCsRnV9fHOgUAPAaGM9fEw8gSE42F9PIwwAWEmWB8PI0hAmEnWx8MIERAGwfp4GAECwuBYHw+dJiAMXhfWx3uNF3oICMNjfTx0ioAwfNbHQycICLVYHw8tJyDUZn08tJSA0BTWx0PLCAhNY308tIRvTJqpaevjvcYLPQSEZhvV9fHQAgJCO1gfD40jILSJ9fHQIAJCG1kfDw0gILSZ9fFQkYDQBdbHQwUCQndYHw9DJSB0zyDWxzsHAj0EhO6yPh4GSkDoPuvjYSAEhFFhfTzMMAFh1FgfDzNEQBhV1sfDcRIQRp318VDINwokzVsfDy0gIHC4yevjL8vaXJpTM+YcCPQSEJjOxPr4M3NVVuZjeaP2QNA8/x/2ml/p7xLMaAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOC0wMi0yNVQwOTo1MjozNyswMDowMKD0fRUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTgtMDItMDZUMTM6Mzg6MDQrMDA6MDDL/SE4AAAATXRFWHRzb2Z0d2FyZQBJbWFnZU1hZ2ljayA2LjguOS05IFExNiB4ODZfNjQgMjAxNy0wNy0zMSBodHRwOi8vd3d3LmltYWdlbWFnaWNrLm9yZ1NhVcYAAAAYdEVYdFRodW1iOjpEb2N1bWVudDo6UGFnZXMAMaf/uy8AAAAZdEVYdFRodW1iOjpJbWFnZTo6SGVpZ2h0ADM1OTnWoXerAAAAGHRFWHRUaHVtYjo6SW1hZ2U6OldpZHRoADI0MDDSiKUNAAAAGXRFWHRUaHVtYjo6TWltZXR5cGUAaW1hZ2UvcG5nP7JWTgAAABd0RVh0VGh1bWI6Ok1UaW1lADE1MTc5MjQyODQsEnI2AAAAE3RFWHRUaHVtYjo6U2l6ZQA3NS44S0JCZMRG3wAAAEx0RVh0VGh1bWI6OlVSSQBmaWxlOi8vL29wdC9wbmdfYmF0Y2hfNC9oYXNoaWNvcnAtcGFja2VyLWxvZ28tcG5nLXRyYW5zcGFyZW50LnBuZxbl/aYAAAAASUVORK5CYII=
+enabled: true
+concurrency: 1
+input:
+  Packer-Build-vCenter-Cluster: sc2c04-ATMM
+  Packer-Build-vCenter-Datastore: sc2c02vsan01
+  Packer-Build-vCenter-Folder: FieldDemo Packer Templates
+  Packer-Build-vCenter-Network: Mgmt VMs
+  Packer-Build-vRA-Project: Field Demo
+  Packer-Build-vRA-vSphere-Cloud-Account: Santa Clara VC3
+  Packer_Version: 1.6.0
+_inputMeta:
+  Packer_Version:
+    description: Packer Version
+    mandatory: false
+  Packer-Build-vCenter-Network:
+    description: Name of the DHCP enabled vCenter Network on which to build the VMs
+    mandatory: true
+  Packer-Build-vCenter-Datastore:
+    description: Name of the vCenter Datastore on which to build the VMs
+    mandatory: true
+  Packer-Build-vCenter-Folder:
+    description: Name of the vCenter Folder in which to build the VMs
+    mandatory: true
+  Packer-Build-vRA-vSphere-Cloud-Account:
+    description: 'Name of the vSphere '
+    mandatory: true
+  Packer-Build-vCenter-Cluster:
+    description: Name of the vCenter Cluster on which to build the VMs
+    mandatory: true
+  Packer-Build-vRA-Project:
+    description: ''
+    mandatory: true
+workspace:
+  endpoint: sc2-fd-perm-docker
+  image: sammcgeown/codestream-ci-packer:latest
+  registry: ''
+  path: /build
+  limits:
+    cpu: 1.0
+    memory: 512
+stageOrder:
+- Build
+- Test
+- Release
+stages:
+  Test:
+    taskOrder:
+    - Install Terraform
+    - Validate Image Plan
+    - Run Image Plan
+    - Validate Test Plan
+    - Run Test Plan
+    - Security Scan
+    - Destroy Test VMs
+    tasks:
+      Install Terraform:
+        type: CI
+        input:
+          steps:
+          - '# Download Terraform'
+          - wget -q https://releases.hashicorp.com/terraform/0.12.26/terraform_0.12.26_linux_amd64.zip
+          - unzip terraform_0.12.26_linux_amd64.zip
+          - mv -f terraform /usr/local/bin
+          - chmod +x /usr/local/bin/terraform
+          - '# Download Terraform vRA Provider'
+          - mkdir -p ~/.terraform.d/plugins/linux_amd64
+          - wget -q https://github.com/vmware/terraform-provider-vra/releases/download/v0.2.3/terraform-provider-vra-linux_amd64-v0.2.3.tgz
+          - tar xvf terraform-provider-vra-linux_amd64-v0.2.3.tgz
+          - mv terraform-provider-vra_v0.2.3 ~/.terraform.d/plugins/
+          - '# Validate'
+          - terraform version
+          - ''
+          - BUILDTIME=${Build.Configure Environment.output.exports.BUILDTIME}
+          - '# Set environment variables'
+          - cat <<EOF >> /build/terraform.secrets
+          - export TF_VAR_vra_refresh_token="${Build.Get API Token.output.responseJson.refresh_token}"
+          - export TF_VAR_vra_url="${var.Packer-Build-vRA-Url}"
+          - export TF_VAR_images=["\"packer-centos7-$BUILDTIME\"","\"packer-centos8-$BUILDTIME\"","\"packer-ubuntu1804-$BUILDTIME\""]
+          - export TF_VAR_vra_cloud_account="${input.Packer-Build-vRA-vSphere-Cloud-Account}"
+          - export TF_VAR_vra_project="${input.Packer-Build-vRA-Project}"
+          - export TF_VAR_buildtime="$BUILDTIME"
+          - EOF
+          export: [
+            ]
+          artifacts: [
+            ]
+          process: [
+            ]
+      Run Image Plan:
+        type: CI
+        input:
+          steps:
+          - set +x
+          - source /build/terraform.secrets
+          - set -x
+          - ''
+          - cd /build/templates/terraform/image
+          - terraform init -no-color >> /dev/null
+          - terraform apply -no-color --auto-approve tf.image.plan
+          export: [
+            ]
+          artifacts: [
+            ]
+          process: [
+            ]
+      Security Scan:
+        type: CI
+        input:
+          steps:
+          - '# ToDo - Security Scan'
+          export: [
+            ]
+          artifacts: [
+            ]
+          process: [
+            ]
+      Validate Test Plan:
+        type: CI
+        ignoreFailure: true
+        input:
+          steps:
+          - set +x
+          - source /build/terraform.secrets
+          - set -x
+          - ''
+          - cd /build/templates/terraform/test
+          - terraform init -no-color >> /dev/null
+          - terraform plan -no-color -out=tf.test.plan
+          export: [
+            ]
+          artifacts: [
+            ]
+          process: [
+            ]
+      Destroy Test VMs:
+        type: CI
+        input:
+          steps:
+          - set +x
+          - source /build/terraform.secrets
+          - set -x
+          - ''
+          - cd /build/templates/terraform/test
+          - terraform destroy -no-color --auto-approve
+          - cd /build/templates/terraform/image
+          - terraform destroy -no-color --auto-approve
+          export: [
+            ]
+          artifacts: [
+            ]
+          process: [
+            ]
+      Run Test Plan:
+        type: CI
+        ignoreFailure: true
+        input:
+          steps:
+          - set +x
+          - source /build/terraform.secrets
+          - set -x
+          - ''
+          - cd /build/templates/terraform/test
+          - terraform apply -no-color --auto-approve tf.test.plan
+          export: [
+            ]
+          artifacts: [
+            ]
+          process: [
+            ]
+      Validate Image Plan:
+        type: CI
+        input:
+          steps:
+          - set +x
+          - source /build/terraform.secrets
+          - set -x
+          - ''
+          - cd /build/templates/terraform/image
+          - terraform init -no-color >> /dev/null
+          - terraform plan -no-color -out=tf.image.plan
+          export: [
+            ]
+          artifacts: [
+            ]
+          process: [
+            ]
+  Build:
+    taskOrder:
+    - Configure Environment
+    - Build Packer Images
+    - Get API Token
+    - Trigger Image Enumeration
+    - Wait For Enumeration
+    tasks:
+      Wait For Enumeration:
+        type: POLL
+        input:
+          url: ${var.Packer-Build-vRA-Url}/iaas/api/request-tracker/${Build.Trigger Image Enumeration.output.responseBody.id}
+          pollCount: 5
+          pollIntervalSeconds: 60
+          ignoreFailure: true
+          headers:
+            Accept: application/json
+            Content-Type: application/json
+            Authorization: ${Build.Get API Token.output.responseHeaders.Authorization}
+          exitCriteria:
+            success: status == 'FINISHED'
+            failure: status == 'FAILED'
+      Get API Token:
+        type: REST
+        input:
+          action: post
+          url: ${var.Packer-Build-vRA-Url}/csp/gateway/am/api/login?access_token
+          headers:
+            Accept: application/json
+            Content-Type: application/json
+          payload: |-
+            {
+              "username": "${var.Packer-Build-vRA-Username}",
+              "password": "${var.Packer-Build-vRA-Password}"
+            }
+      Configure Environment:
+        type: CI
+        input:
+          steps:
+          - export BUILDTIME="$(date "+%Y%m%d-%H%M%S")"
+          - '#export BUILDTIME="20200623-105152"'
+          - ''
+          - '# Create environment variables'
+          - cat <<EOF >> /build/packer.secrets
+          - export VCPASS='${var.Packer-Build-vCenter-User-Password}'
+          - export VCSERVER="${var.Packer-Build-vCenter-Server}"
+          - export VCUSER="${var.Packer-Build-vCenter-User}"
+          - export VCDATASTORE="${input.Packer-Build-vCenter-Datastore}"
+          - export VCFOLDER="${input.Packer-Build-vCenter-Folder}"
+          - export VCCLUSTER="${input.Packer-Build-vCenter-Cluster}"
+          - export VCNETWORK="${input.Packer-Build-vCenter-Network}"
+          - export SSHUSER="autotmm"
+          - export SSHPASS="VMware1!"
+          - export BUILDTIME=$BUILDTIME
+          - EOF
+          - ''
+          - '# Get templates from git'
+          - git clone ${var.Packer-Build-Git-Repository} templates
+          export:
+          - BUILDTIME
+          artifacts: [
+            ]
+          process: [
+            ]
+      Trigger Image Enumeration:
+        type: REST
+        input:
+          action: post
+          url: ${var.Packer-Build-vRA-Url}/iaas/api/cloud-accounts/dfe60e8cf171d675599603ec8984a/private-image-enumeration
+          headers:
+            Accept: application/json
+            Authorization: ${Build.Get API Token.output.responseHeaders.Authorization}
+          payload: ''
+      Build Packer Images:
+        type: CI
+        ignoreFailure: true
+        input:
+          steps:
+          - set +x
+          - source /build/packer.secrets
+          - set -x
+          - ''
+          - cd /build/templates/
+          - '# Validate config'
+          - packer validate -var-file=variables.json -only=CentOS7,CentOS8,Ubuntu1804 all.json
+          - '# Build validated config'
+          - packer build -force -var-file=variables.json -only=CentOS7,CentOS8,Ubuntu1804 all.json
+          export: [
+            ]
+          artifacts: [
+            ]
+          process: [
+            ]
+  Release:
+    taskOrder:
+    - Get Existing Image Mapping
+    - Get Image Mapping ID
+    - Delete Existing Image Mapping
+    - Validate Release Plan
+    - Run Release Plan
+    tasks:
+      Get Existing Image Mapping:
+        type: REST
+        input:
+          action: get
+          url: ${var.Packer-Build-vRA-Url}/iaas/api/image-profiles?$filter=((name%20eq%20%27*packer-image-profile*%27))
+          headers:
+            Accept: application/json
+            Authorization: ${Build.Get API Token.output.responseHeaders.Authorization}
+          payload: ''
+      Delete Existing Image Mapping:
+        type: REST
+        preCondition: ${Release.Get Image Mapping ID.output.status} == "COMPLETED"  && ${Release.Get Image
+          Mapping ID.output.exports.MAPPINGID} != "null"
+        input:
+          action: delete
+          url: ${var.Packer-Build-vRA-Url}/iaas/api/image-profiles/${Release.Get Image Mapping ID.output.exports.MAPPINGID}
+          headers:
+            Accept: application/json
+            Authorization: ${Build.Get API Token.output.responseHeaders.Authorization}
+          payload: ''
+      Validate Release Plan:
+        type: CI
+        input:
+          steps:
+          - set +x
+          - source /build/terraform.secrets
+          - set -x
+          - ''
+          - cd /build/templates/terraform/release
+          - terraform init -no-color >> /dev/null
+          - terraform plan -no-color -out=tf.release.plan
+          - ''
+          export: [
+            ]
+          artifacts: [
+            ]
+          process: [
+            ]
+      Run Release Plan:
+        type: CI
+        input:
+          steps:
+          - set +x
+          - source /build/terraform.secrets
+          - set -x
+          - ''
+          - cd /build/templates/terraform/release
+          - terraform init -no-color >> /dev/null
+          - terraform apply -no-color --auto-approve tf.release.plan
+          - ''
+          - ''
+          export: [
+            ]
+          artifacts: [
+            ]
+          process: [
+            ]
+      Get Image Mapping ID:
+        type: CI
+        input:
+          steps:
+          - export MAPPINGID=$(echo '${Release.Get Existing Image Mapping.output.responseJson.content}'
+            | jq -r '.[0].id')
+          - ''
+          export:
+          - MAPPINGID
+          artifacts: [
+            ]
+          process: [
+            ]
