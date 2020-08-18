@@ -290,8 +290,8 @@
                 "Ubuntu1910",
                 "Ubuntu2004"
             ],
-            "destination": "/tmp/id_autotmm.pub",
-            "source": "{{ template_dir }}/ssh/id_autotmm.pub",
+            "destination": "/tmp/id_rsa.pub",
+            "source": "{{ template_dir }}/ssh/id_rsa.pub",
             "type": "file"
         },
         {
