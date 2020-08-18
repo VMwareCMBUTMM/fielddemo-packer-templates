@@ -7,16 +7,15 @@
     "vcenter_cluster": "{{ env `VCCLUSTER`}}",
     "vcenter_network": "{{ env `VCNETWORK`}}",
 
+    "buildtime": "{{ env `BUILDTIME`}}",
+
     "ssh_username": "{{ env `SSHUSER`}}",
     "ssh_password": "{{ env `SSHPASS`}}",
 
     "winrm_user": "Administrator",
-    "winrm_password": "VMware1!",
+    "winrm_password": "{{ env `SSHPASS`}}",
 
-    "buildtime": "{{ env `BUILDTIME`}}",
-
-    "http_server": "https://raw.githubusercontent.com/sammcgeown/vsphere-packer-templates/master/config",
-
+    "http_server": "https://raw.githubusercontent.com/VMwareCMBUTMM/fielddemo-packer-templates/master/config",
 
     "ubuntu1804_vm_name": "packer-ubuntu1804",
     "ubuntu1804_iso": "[sc2c02vsan01] iso/ubuntu-18.04.3-server-amd64.iso",
