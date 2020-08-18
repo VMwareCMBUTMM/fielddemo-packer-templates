@@ -1,6 +1,6 @@
 {
-    "builders": [
-        {
+    "builders": [{
+            "name": "CentOS7",
             "CPUs": "2",
             "RAM": "2048",
             "RAM_reserve_all": true,
@@ -21,31 +21,27 @@
             "iso_paths": [
                 "{{user `centos7_iso`}}"
             ],
-            "name": "CentOS7",
-            "network_adapters": [
-                {
-                    "network": "{{user `vcenter_network`}}",
-                    "network_card": "vmxnet3"
-                }
-            ],
+            "network_adapters": [{
+                "network": "{{user `vcenter_network`}}",
+                "network_card": "vmxnet3"
+            }],
             "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer @ {{isotime \"2006-01-02 03:04\"}}.",
             "password": "{{user `vcenter_password`}}",
             "remove_cdrom": true,
             "shutdown_command": "echo '{{user `var_guest_password`}}' | sudo -S -E shutdown -P now",
             "ssh_password": "{{user `ssh_password`}}",
             "ssh_username": "{{user `ssh_username`}}",
-            "storage": [
-                {
-                    "disk_size": "20480",
-                    "disk_thin_provisioned": true
-                }
-            ],
+            "storage": [{
+                "disk_size": "20480",
+                "disk_thin_provisioned": true
+            }],
             "type": "vsphere-iso",
             "username": "{{user `vcenter_username`}}",
             "vcenter_server": "{{user `vcenter_server`}}",
             "vm_name": "{{user `centos7_vm_name`}}-{{user `buildtime`}}"
         },
         {
+            "name": "CentOS8",
             "CPUs": "2",
             "RAM": "2048",
             "RAM_reserve_all": false,
@@ -66,31 +62,27 @@
             "iso_paths": [
                 "{{user `centos8_iso`}}"
             ],
-            "name": "CentOS8",
-            "network_adapters": [
-                {
-                    "network": "{{user `vcenter_network`}}",
-                    "network_card": "vmxnet3"
-                }
-            ],
+            "network_adapters": [{
+                "network": "{{user `vcenter_network`}}",
+                "network_card": "vmxnet3"
+            }],
             "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer @ {{isotime \"2006-01-02 03:04\"}}.",
             "password": "{{user `vcenter_password`}}",
             "remove_cdrom": "true",
             "shutdown_command": "echo '{{user `var_guest_password`}}' | sudo -S -E shutdown -P now",
             "ssh_password": "{{ user `ssh_password` }}",
             "ssh_username": "{{ user `ssh_username` }}",
-            "storage": [
-                {
-                    "disk_size": "20480",
-                    "disk_thin_provisioned": true
-                }
-            ],
+            "storage": [{
+                "disk_size": "20480",
+                "disk_thin_provisioned": true
+            }],
             "type": "vsphere-iso",
             "username": "{{user `vcenter_username`}}",
             "vcenter_server": "{{user `vcenter_server`}}",
             "vm_name": "{{ user `centos8_vm_name` }}-{{user `buildtime`}}"
         },
         {
+            "name": "Ubuntu1804",
             "CPUs": "2",
             "RAM": "2048",
             "RAM_reserve_all": true,
@@ -126,30 +118,26 @@
             "iso_paths": [
                 "{{user `ubuntu1804_iso`}}"
             ],
-            "name": "Ubuntu1804",
-            "network_adapters": [
-                {
-                    "network": "{{user `vcenter_network`}}",
-                    "network_card": "vmxnet3"
-                }
-            ],
+            "network_adapters": [{
+                "network": "{{user `vcenter_network`}}",
+                "network_card": "vmxnet3"
+            }],
             "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer @ {{isotime \"2006-01-02 03:04\"}}.",
             "password": "{{user `vcenter_password`}}",
             "remove_cdrom": true,
             "ssh_password": "{{user `ssh_password`}}",
             "ssh_username": "{{user `ssh_username`}}",
-            "storage": [
-                {
-                    "disk_size": "20480",
-                    "disk_thin_provisioned": true
-                }
-            ],
+            "storage": [{
+                "disk_size": "20480",
+                "disk_thin_provisioned": true
+            }],
             "type": "vsphere-iso",
             "username": "{{user `vcenter_username`}}",
             "vcenter_server": "{{user `vcenter_server`}}",
             "vm_name": "{{user `ubuntu1804_vm_name`}}-{{user `buildtime`}}"
         },
         {
+            "name": "Ubuntu1910",
             "CPUs": "2",
             "RAM": "2048",
             "RAM_reserve_all": true,
@@ -188,30 +176,26 @@
             "iso_paths": [
                 "{{user `ubuntu1910_iso`}}"
             ],
-            "name": "Ubuntu1910",
-            "network_adapters": [
-                {
-                    "network": "{{user `vcenter_network`}}",
-                    "network_card": "vmxnet3"
-                }
-            ],
+            "network_adapters": [{
+                "network": "{{user `vcenter_network`}}",
+                "network_card": "vmxnet3"
+            }],
             "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer @ {{isotime \"2006-01-02 03:04\"}}.",
             "password": "{{user `vcenter_password`}}",
             "remove_cdrom": true,
             "ssh_password": "{{user `ssh_password`}}",
             "ssh_username": "{{user `ssh_username`}}",
-            "storage": [
-                {
-                    "disk_size": "20480",
-                    "disk_thin_provisioned": true
-                }
-            ],
+            "storage": [{
+                "disk_size": "20480",
+                "disk_thin_provisioned": true
+            }],
             "type": "vsphere-iso",
             "username": "{{user `vcenter_username`}}",
             "vcenter_server": "{{user `vcenter_server`}}",
             "vm_name": "{{user `ubuntu1910_vm_name`}}-{{user `buildtime`}}"
         },
         {
+            "name": "Ubuntu2004",
             "CPUs": "2",
             "RAM": "2048",
             "RAM_reserve_all": true,
@@ -234,33 +218,78 @@
             "iso_paths": [
                 "{{user `ubuntu2004_iso`}}"
             ],
-            "name": "Ubuntu2004",
-            "network_adapters": [
-                {
-                    "network": "{{user `vcenter_network`}}",
-                    "network_card": "vmxnet3"
-                }
-            ],
+            "network_adapters": [{
+                "network": "{{user `vcenter_network`}}",
+                "network_card": "vmxnet3"
+            }],
             "notes": "Default SSH User: {{user `ssh_username`}}\nDefault SSH Pass: {{user `ssh_password`}}\nBuilt by Packer @ {{isotime \"2006-01-02 03:04\"}}.",
             "password": "{{user `vcenter_password`}}",
             "remove_cdrom": true,
             "ssh_handshake_attempts": "20",
             "ssh_password": "{{user `ssh_password`}}",
             "ssh_username": "{{user `ssh_username`}}",
-            "storage": [
-                {
-                    "disk_size": "20480",
-                    "disk_thin_provisioned": true
-                }
-            ],
+            "storage": [{
+                "disk_size": "20480",
+                "disk_thin_provisioned": true
+            }],
             "type": "vsphere-iso",
             "username": "{{user `vcenter_username`}}",
             "vcenter_server": "{{user `vcenter_server`}}",
             "vm_name": "{{user `ubuntu2004_vm_name`}}-{{user `buildtime`}}"
+        },
+        {
+            "name": "Windows2016",
+            "type": "vsphere-iso",
+            "username": "{{user `vcenter_username`}}",
+            "vcenter_server": "{{user `vcenter_server`}}",
+            "password": "{{user `vcenter_password`}}",
+            "insecure_connection": "true",
+            "cluster": "{{user `vcenter_cluster`}}",
+            "network_adapters": [{
+                "network": "{{user `vcenter_network`}}"
+            }],
+            "datastore": "{{user `vcenter_datastore`}}",
+            "folder": "{{user `vcenter_folder`}}",
+            "convert_to_template": "true",
+
+            "communicator": "winrm",
+            "winrm_username": "{{user `winrm_username`}}",
+            "winrm_password": "{{user `winrm_password`}}",
+            "vm_name": "{{ user `windows_2016_vm_name` }}-{{user `buildtime`}}",
+            "notes": "Default User: {{user `winrm_username`}}\nDefault Pass: {{user `winrm_password`}}\nBuilt by Packer @ {{isotime \"2006-01-02 03:04\"}}.",
+            "guest_os_type": "windows9Server64Guest",
+            "CPUs": "2",
+            "RAM": "4096",
+            "disk_controller_type": "pvscsi",
+            "storage": [{
+                "disk_size": "61440",
+                "disk_thin_provisioned": true
+            }],
+            "iso_paths": [
+                "{{user `windows_2016_iso`}}",
+                "[] /vmimages/tools-isoimages/windows.iso"
+            ],
+            "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c Packer_Provisioning_Shutdown",
+            "floppy_files": [
+                "{{ template_dir }}/config/autounattend.xml",
+                "{{ template_dir }}/drivers/pvscsi-win8/pvscsi.cat",
+                "{{ template_dir }}/drivers/pvscsi-win8/pvscsi.inf",
+                "{{ template_dir }}/drivers/pvscsi-win8/pvscsi.sys",
+                "{{ template_dir }}/drivers/pvscsi-win8/txtsetup.oem",
+                "{{ template_dir }}/scripts/win_vmtools.cmd",
+                "{{ template_dir }}/scripts/win2016.ps1"
+            ],
+            "remove_cdrom": "true"
         }
     ],
-    "provisioners": [
-        {
+    "provisioners": [{
+            "only": [
+                "CentOS7",
+                "CentOS8",
+                "Ubuntu1804",
+                "Ubuntu1910",
+                "Ubuntu2004"
+            ],
             "destination": "/tmp/id_autotmm.pub",
             "source": "{{ template_dir }}/ssh/id_autotmm.pub",
             "type": "file"
@@ -323,6 +352,7 @@
     ],
     "sensitive-variables": [
         "vcenter_password",
-        "ssh_password"
+        "ssh_password",
+        "winrm_password"
     ]
 }

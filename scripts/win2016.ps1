@@ -1,3 +1,7 @@
+# Basic configuration of vanilla Windows Server installation to progress Packer.io builds
+# @author Michael Poore
+# @website https://blog.v12n.io
+# @source https://github.com/virtualhobbit
 $ErrorActionPreference = "Stop"
 
 # Switch network connection to private mode
