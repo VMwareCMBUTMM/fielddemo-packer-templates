@@ -29,7 +29,7 @@
     "ubuntu2004_iso": "[sc2c02vsan01] iso/ubuntu-18.04.3-server-amd64.iso",
     "ubuntu2004_checksum": "caf3fd69c77c439f162e2ba6040e9c320c4ff0d69aad1340a514319a9264df9f",
 
-    "windows_2016_vm_name": "packer-win2016",
+    "windows_2016_vm_name": "packer-windows2016",
     "windows_2016_iso": "[sc2c02vsan01] iso/Windows_Server_2016_Datacenter_EVAL_en-us_14393_refresh.ISO",
     "windows_2016_checksum": "1ce702a578a3cb1ac3d14873980838590f06d5b7101c5daaccbac9d73f1fb50f",
 
