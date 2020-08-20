@@ -348,6 +348,15 @@
                 "{{ template_dir }}/scripts/ubuntu_18.sh"
             ],
             "type": "shell"
+        },
+        {
+            "only": [
+                "Windows2016"
+            ],
+            "type": "powershell",
+            "scripts": [
+                "{{ template_dir }}/scripts/win_cloudbaseinit.ps1"
+            ]
         }
     ],
     "sensitive-variables": [

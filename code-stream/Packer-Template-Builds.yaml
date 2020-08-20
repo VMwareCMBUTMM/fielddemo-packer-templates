@@ -6,34 +6,63 @@ icon: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAJYCAQAAAAwf0r7AAAABGdB
 enabled: true
 concurrency: 1
 input:
-  Packer-Build-vCenter-Cluster: sc2c04-ATMM
-  Packer-Build-vCenter-Datastore: sc2c02vsan01
-  Packer-Build-vCenter-Folder: FieldDemo Packer Templates
-  Packer-Build-vCenter-Network: Mgmt VMs
-  Packer-Build-vRA-Project: Field Demo
-  Packer-Build-vRA-vSphere-Cloud-Account: Santa Clara VC3
-  Packer_Version: 1.6.0
+  Packer-Build-Git-Repository: https://github.com/VMwareCMBUTMM/fielddemo-packer-templates
+  Packer-Build-Images: CentOS8,Ubuntu1804,Windows2016
+  Packer-Build-vCenter-Cluster: ClusterName
+  Packer-Build-vCenter-Datastore: DatastoreName
+  Packer-Build-vCenter-Folder: FolderName
+  Packer-Build-vCenter-Network: NetworkName
+  Packer-Build-vCenter-Server: vCenterFQDN
+  Packer-Build-vCenter-User: vCenterUser
+  Packer-Build-vCenter-User-Password: vCenterPassword
+  Packer-Build-vRA-Password: vRAPassword
+  Packer-Build-vRA-Project: vRAProject
+  Packer-Build-vRA-Url: vRAURL
+  Packer-Build-vRA-Username: vRAUser
+  Packer-Build-vRA-vSphere-Cloud-Account: vRAvSphereCloudAccount
 _inputMeta:
-  Packer_Version:
-    description: Packer Version
-    mandatory: false
   Packer-Build-vCenter-Network:
     description: Name of the DHCP enabled vCenter Network on which to build the VMs
     mandatory: true
+  Packer-Build-vCenter-User:
+    description: Name of the vCenter User that Packer will use to build
+    mandatory: true
+  Packer-Build-vRA-Username:
+    description: Name of the vRealize Automation user that Code Stream will use to make API calls
+    mandatory: true
   Packer-Build-vCenter-Datastore:
     description: Name of the vCenter Datastore on which to build the VMs
+    mandatory: true
+  Packer-Build-vRA-Password:
+    description: Password of the vRealize Automation user that Code Stream will use to make API calls
+    mandatory: true
+  Packer-Build-vCenter-Cluster:
+    description: Name of the vCenter Cluster on which to build the VMs
+    mandatory: true
+  Packer-Build-vRA-Project:
+    description: Name of the vRealize Automation Project in which the test deployments are performed
+    mandatory: true
+  Packer-Build-vRA-Url:
+    description: Base URL of the vRealize Automation environment (e.g. https://vra.fqdn)
+    mandatory: true
+  Packer-Build-Images:
+    description: Comma separated list of Packer Builder Image Names (e.g. used with the packer --only
+      flag)
+    mandatory: true
+  Packer-Build-Git-Repository:
+    description: URL of the Packer Template Repository
     mandatory: true
   Packer-Build-vCenter-Folder:
     description: Name of the vCenter Folder in which to build the VMs
     mandatory: true
   Packer-Build-vRA-vSphere-Cloud-Account:
     description: 'Name of the vSphere '
+    mandatory: false
+  Packer-Build-vCenter-User-Password:
+    description: Password of the vCenter User that Packer will use to build
     mandatory: true
-  Packer-Build-vCenter-Cluster:
-    description: Name of the vCenter Cluster on which to build the VMs
-    mandatory: true
-  Packer-Build-vRA-Project:
-    description: ''
+  Packer-Build-vCenter-Server:
+    description: Name of the vCenter Server that Packer will use to build
     mandatory: true
 workspace:
   endpoint: sc2-fd-perm-docker
@@ -44,227 +73,219 @@ workspace:
     cpu: 1.0
     memory: 512
 stageOrder:
+- Prepare Environment
 - Build
 - Test
 - Release
 stages:
   Test:
     taskOrder:
-    - Install Terraform
-    - Validate Image Plan
-    - Run Image Plan
-    - Validate Test Plan
-    - Run Test Plan
-    - Security Scan
-    - Destroy Test VMs
+    - Create Image Profile JSON
+    - Create Image Profile,Update Image Profile
+    - Create Blueprint
+    - Request Deployment
+    - Wait For Deployment
+    - Test Images
+    - Delete Deployment,Delete Blueprint
     tasks:
-      Install Terraform:
+      Request Deployment:
+        type: REST
+        input:
+          action: post
+          url: ${input.Packer-Build-vRA-Url}/blueprint/api/blueprint-requests
+          headers:
+            Content-Type: application/json
+            Authorization: ${Prepare Environment.Get API Token.output.responseHeaders.Authorization}
+          payload: |-
+            {
+                "blueprintId": "${Test.Create Blueprint.output.responseJson.id}"
+            }
+      Delete Blueprint:
+        type: REST
+        ignoreFailure: true
+        input:
+          action: delete
+          url: ${input.Packer-Build-vRA-Url}/blueprint/api/blueprints/${Test.Create Blueprint.output.responseJson.id}
+          headers:
+            Content-Type: application/json
+            Authorization: ${Prepare Environment.Get API Token.output.responseHeaders.Authorization}
+          payload: ''
+      Wait For Deployment:
+        type: POLL
+        input:
+          url: ${input.Packer-Build-vRA-Url}/blueprint/api/blueprint-requests/${Test.Request Deployment.output.responseJson.id}
+          pollCount: 10
+          pollIntervalSeconds: 60
+          ignoreFailure: true
+          headers:
+            Accept: application/json
+            Content-Type: application/json
+            Authorization: ${Prepare Environment.Get API Token.output.responseHeaders.Authorization}
+          exitCriteria:
+            success: status == 'FINISHED'
+            failure: status == 'FAILED'
+      Test Images:
+        type: UserOperation
+        input:
+          approvers:
+          - smcgeown
+          approverGroups: [
+            ]
+          summary: Please test the deployed images
+          description: ''
+          sendemail: false
+          expirationInDays: 3
+          pipelineName: ${name}
+          cancelPreviousPendingUserOp: false
+      Create Image Profile:
+        type: REST
+        preCondition: '"${Prepare Environment.Export Object IDs.output.exports.ImageProfileId}" == "null"'
+        input:
+          action: post
+          url: ${input.Packer-Build-vRA-Url}/iaas/api/image-profiles
+          headers:
+            Content-Type: application/json
+            Authorization: ${Prepare Environment.Get API Token.output.responseHeaders.Authorization}
+          payload: ${Test.Create Image Profile JSON.output.exports.profileJson}
+      Update Image Profile:
+        type: REST
+        preCondition: '"${Prepare Environment.Export Object IDs.output.exports.ImageProfileId}" != "null"'
+        input:
+          action: patch
+          url: ${input.Packer-Build-vRA-Url}/iaas/api/image-profiles/${Prepare Environment.Export Object
+            IDs.output.exports.ImageProfileId}
+          headers:
+            Content-Type: application/json
+            Authorization: ${Prepare Environment.Get API Token.output.responseHeaders.Authorization}
+          payload: ${Test.Create Image Profile JSON.output.exports.profileJson}
+      Create Blueprint:
+        type: REST
+        input:
+          action: post
+          url: ${input.Packer-Build-vRA-Url}/blueprint/api/blueprints
+          headers:
+            Content-Type: application/json
+            Authorization: ${Prepare Environment.Get API Token.output.responseHeaders.Authorization}
+          payload: ${Test.Create Image Profile JSON.output.exports.blueprintJson}
+      Create Image Profile JSON:
         type: CI
+        ignoreFailure: true
         input:
           steps:
-          - '# Download Terraform'
-          - wget -q https://releases.hashicorp.com/terraform/0.12.26/terraform_0.12.26_linux_amd64.zip
-          - unzip terraform_0.12.26_linux_amd64.zip
-          - mv -f terraform /usr/local/bin
-          - chmod +x /usr/local/bin/terraform
-          - '# Download Terraform vRA Provider'
-          - mkdir -p ~/.terraform.d/plugins/linux_amd64
-          - wget -q https://github.com/vmware/terraform-provider-vra/releases/download/v0.2.3/terraform-provider-vra-linux_amd64-v0.2.3.tgz
-          - tar xvf terraform-provider-vra-linux_amd64-v0.2.3.tgz
-          - mv terraform-provider-vra_v0.2.3 ~/.terraform.d/plugins/
-          - '# Validate'
-          - terraform version
+          - buildImages=${input.Packer-Build-Images}
+          - buildTime=${Prepare Environment.Configure Environment.output.exports.BUILDTIME}
+          - regionId=${Prepare Environment.Export Object IDs.output.exports.RegionId}
+          - projectId=${Prepare Environment.Export Object IDs.output.exports.ProjectId}
           - ''
-          - BUILDTIME=${Build.Configure Environment.output.exports.BUILDTIME}
-          - '# Set environment variables'
-          - cat <<EOF >> /build/terraform.secrets
-          - export TF_VAR_vra_refresh_token="${Build.Get API Token.output.responseJson.refresh_token}"
-          - export TF_VAR_vra_url="${var.Packer-Build-vRA-Url}"
-          - export TF_VAR_images=["\"packer-centos7-$BUILDTIME\"","\"packer-centos8-$BUILDTIME\"","\"packer-ubuntu1804-$BUILDTIME\""]
-          - export TF_VAR_vra_cloud_account="${input.Packer-Build-vRA-vSphere-Cloud-Account}"
-          - export TF_VAR_vra_project="${input.Packer-Build-vRA-Project}"
-          - export TF_VAR_buildtime="$BUILDTIME"
+          - '# If there''s an existing image profile, clone it stripping out extra fields, if not, create
+            one'
+          - if [ "${Prepare Environment.Export Object IDs.output.exports.ImageProfileId}" = "null" ];
+            then
+          - '    jq -n --arg name packer-image-profile ''{"name":$name}'' > new-profile.json'
+          - else
+          - '    echo $(echo ''${Prepare Environment.Get Packer Image Profile.output.responseJson}'' |
+            jq ''.content[0]'' | jq ''del(.. | ._links?, .osFamily?, .externalRegionId?, .isPrivate?,
+            .externalId?, .updatedAt?, .organizationId?, .orgId?) | del(.id)'') > new-profile.json'
+          - fi
+          - '# Add in the Region ID'
+          - echo $(jq ".regionId = \"$regionId\"" new-profile.json) > new-profile.json
+          - ''
+          - ''
+          - for image in $(echo "$buildImages" | tr ',' ' '); do
+          - '    templateName=$(echo "packer-$image-$buildTime" | tr ''[:upper:]'' ''[:lower:]'');'
+          - '    echo $(jq ".imageMappings.mapping.\"[Packer Test] $image\".name = \"$templateName\""
+            new-profile.json) > new-profile.json '
+          - '    templateId=$(echo ''${Build.Get Images.output.responseJson}'' | jq -r ".content[] | select(
+            .name == \"$templateName\") | .id")'
+          - '    echo $(jq ".imageMappings.mapping.\"[Packer Test] $image\".id = \"$templateId\"" new-profile.json)
+            > new-profile.json '
+          - done
+          - ''
+          - imageMapping=$(jq -r '.imageMappings.mapping' new-profile.json)
+          - echo $(jq --argjson imageMapping "$imageMapping" '.imageMapping = $imageMapping' new-profile.json
+            | jq 'del(.imageMappings)') > new-profile.json
+          - ''
+          - ''
+          - export profileJson=$(cat new-profile.json)
+          - ''
+          - '### Create Deployment JSON'
+          - cat <<EOF > new-blueprint.yaml
+          - 'formatVersion: 1'
+          - 'inputs: {}'
+          - 'resources:'
           - EOF
-          export: [
-            ]
-          artifacts: [
-            ]
-          process: [
-            ]
-      Run Image Plan:
-        type: CI
-        input:
-          steps:
-          - set +x
-          - source /build/terraform.secrets
-          - set -x
           - ''
-          - cd /build/templates/terraform/image
-          - terraform init -no-color >> /dev/null
-          - terraform apply -no-color --auto-approve tf.image.plan
-          export: [
-            ]
-          artifacts: [
-            ]
-          process: [
-            ]
-      Security Scan:
-        type: CI
-        input:
-          steps:
-          - '# ToDo - Security Scan'
-          export: [
-            ]
-          artifacts: [
-            ]
-          process: [
-            ]
-      Validate Test Plan:
-        type: CI
-        ignoreFailure: true
-        input:
-          steps:
-          - set +x
-          - source /build/terraform.secrets
-          - set -x
+          - for image in $(echo "$buildImages" | tr ',' ' '); do
+          - '    cat <<EOF >> new-blueprint.yaml'
+          - '  Cloud_Machine_$image:'
+          - '    type: Cloud.Machine'
+          - '    properties:'
+          - '      image: ''[Packer Test] $image'''
+          - '      flavor: small'
+          - '      constraints:'
+          - '        - tag: ''env:vsphere'''
+          - EOF
+          - done
+          - '# Replace new lines with \n'
+          - blueprintYAML=$(sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\n/g' new-blueprint.yaml)
           - ''
-          - cd /build/templates/terraform/test
-          - terraform init -no-color >> /dev/null
-          - terraform plan -no-color -out=tf.test.plan
-          export: [
-            ]
-          artifacts: [
-            ]
-          process: [
-            ]
-      Destroy Test VMs:
-        type: CI
-        input:
-          steps:
-          - set +x
-          - source /build/terraform.secrets
-          - set -x
+          - cat <<EOF > new-blueprint.json
+          - '{ "projectId": "$projectId", "name": "Packer-Test-Blueprint", "description": "Blueprint to
+            test Packer Image builds", "status": "DRAFT", "content": "$blueprintYAML" }'
+          - EOF
           - ''
-          - cd /build/templates/terraform/test
-          - terraform destroy -no-color --auto-approve
-          - cd /build/templates/terraform/image
-          - terraform destroy -no-color --auto-approve
-          export: [
-            ]
-          artifacts: [
-            ]
-          process: [
-            ]
-      Run Test Plan:
-        type: CI
-        ignoreFailure: true
-        input:
-          steps:
-          - set +x
-          - source /build/terraform.secrets
-          - set -x
+          - export blueprintJson=$(cat new-blueprint.json)
           - ''
-          - cd /build/templates/terraform/test
-          - terraform apply -no-color --auto-approve tf.test.plan
-          export: [
-            ]
-          artifacts: [
-            ]
-          process: [
-            ]
-      Validate Image Plan:
-        type: CI
-        input:
-          steps:
-          - set +x
-          - source /build/terraform.secrets
-          - set -x
           - ''
-          - cd /build/templates/terraform/image
-          - terraform init -no-color >> /dev/null
-          - terraform plan -no-color -out=tf.image.plan
-          export: [
-            ]
+          export:
+          - profileJson
+          - blueprintJson
           artifacts: [
             ]
           process: [
             ]
+      Delete Deployment:
+        type: REST
+        input:
+          action: delete
+          url: ${input.Packer-Build-vRA-Url}/iaas/api/deployments/${Test.Request Deployment.output.responseJson.deploymentId}
+          headers:
+            Content-Type: application/json
+            Authorization: ${Prepare Environment.Get API Token.output.responseHeaders.Authorization}
+          payload: ''
   Build:
     taskOrder:
-    - Configure Environment
     - Build Packer Images
-    - Get API Token
     - Trigger Image Enumeration
     - Wait For Enumeration
+    - Get Images
     tasks:
       Wait For Enumeration:
         type: POLL
         input:
-          url: ${var.Packer-Build-vRA-Url}/iaas/api/request-tracker/${Build.Trigger Image Enumeration.output.responseBody.id}
+          url: ${input.Packer-Build-vRA-Url}/iaas/api/request-tracker/${Build.Trigger Image Enumeration.output.responseBody.id}
           pollCount: 5
           pollIntervalSeconds: 60
           ignoreFailure: true
           headers:
             Accept: application/json
             Content-Type: application/json
-            Authorization: ${Build.Get API Token.output.responseHeaders.Authorization}
+            Authorization: ${Prepare Environment.Get API Token.output.responseHeaders.Authorization}
           exitCriteria:
             success: status == 'FINISHED'
             failure: status == 'FAILED'
-      Get API Token:
-        type: REST
-        input:
-          action: post
-          url: ${var.Packer-Build-vRA-Url}/csp/gateway/am/api/login?access_token
-          headers:
-            Accept: application/json
-            Content-Type: application/json
-          payload: |-
-            {
-              "username": "${var.Packer-Build-vRA-Username}",
-              "password": "${var.Packer-Build-vRA-Password}"
-            }
-      Configure Environment:
-        type: CI
-        input:
-          steps:
-          - export BUILDTIME="$(date "+%Y%m%d-%H%M%S")"
-          - '#export BUILDTIME="20200623-105152"'
-          - ''
-          - '# Create environment variables'
-          - cat <<EOF >> /build/packer.secrets
-          - export VCPASS='${var.Packer-Build-vCenter-User-Password}'
-          - export VCSERVER="${var.Packer-Build-vCenter-Server}"
-          - export VCUSER="${var.Packer-Build-vCenter-User}"
-          - export VCDATASTORE="${input.Packer-Build-vCenter-Datastore}"
-          - export VCFOLDER="${input.Packer-Build-vCenter-Folder}"
-          - export VCCLUSTER="${input.Packer-Build-vCenter-Cluster}"
-          - export VCNETWORK="${input.Packer-Build-vCenter-Network}"
-          - export SSHUSER="autotmm"
-          - export SSHPASS="VMware1!"
-          - export BUILDTIME=$BUILDTIME
-          - EOF
-          - ''
-          - '# Get templates from git'
-          - git clone ${var.Packer-Build-Git-Repository} templates
-          export:
-          - BUILDTIME
-          artifacts: [
-            ]
-          process: [
-            ]
       Trigger Image Enumeration:
         type: REST
         input:
           action: post
-          url: ${var.Packer-Build-vRA-Url}/iaas/api/cloud-accounts/dfe60e8cf171d675599603ec8984a/private-image-enumeration
+          url: ${input.Packer-Build-vRA-Url}/iaas/api/cloud-accounts/${Prepare Environment.Export Object
+            IDs.output.exports.CloudAccountId}/private-image-enumeration
           headers:
             Accept: application/json
-            Authorization: ${Build.Get API Token.output.responseHeaders.Authorization}
+            Authorization: ${Prepare Environment.Get API Token.output.responseHeaders.Authorization}
           payload: ''
       Build Packer Images:
         type: CI
-        ignoreFailure: true
         input:
           steps:
           - set +x
@@ -273,89 +294,201 @@ stages:
           - ''
           - cd /build/templates/
           - '# Validate config'
-          - packer validate -var-file=variables.json -only=CentOS7,CentOS8,Ubuntu1804 all.json
+          - packer validate -var-file=variables.json -only=${input.Packer-Build-Images} all.json
           - '# Build validated config'
-          - packer build -force -var-file=variables.json -only=CentOS7,CentOS8,Ubuntu1804 all.json
+          - packer build -force -var-file=variables.json -only=${input.Packer-Build-Images} all.json
           export: [
             ]
           artifacts: [
             ]
           process: [
             ]
-  Release:
-    taskOrder:
-    - Get Existing Image Mapping
-    - Get Image Mapping ID
-    - Delete Existing Image Mapping
-    - Validate Release Plan
-    - Run Release Plan
-    tasks:
-      Get Existing Image Mapping:
+      Get Images:
         type: REST
         input:
           action: get
-          url: ${var.Packer-Build-vRA-Url}/iaas/api/image-profiles?$filter=((name%20eq%20%27*packer-image-profile*%27))
+          url: ${input.Packer-Build-vRA-Url}/iaas/api/fabric-images?$filter=(name%20eq%20%27packer-*-${Prepare
+            Environment.Configure Environment.output.exports.BUILDTIME}%27)
           headers:
+            Content-Type: application/json
+            Authorization: ${Prepare Environment.Get API Token.output.responseHeaders.Authorization}
             Accept: application/json
-            Authorization: ${Build.Get API Token.output.responseHeaders.Authorization}
           payload: ''
-      Delete Existing Image Mapping:
-        type: REST
-        preCondition: ${Release.Get Image Mapping ID.output.status} == "COMPLETED"  && ${Release.Get Image
-          Mapping ID.output.exports.MAPPINGID} != "null"
-        input:
-          action: delete
-          url: ${var.Packer-Build-vRA-Url}/iaas/api/image-profiles/${Release.Get Image Mapping ID.output.exports.MAPPINGID}
-          headers:
-            Accept: application/json
-            Authorization: ${Build.Get API Token.output.responseHeaders.Authorization}
-          payload: ''
-      Validate Release Plan:
+  Prepare Environment:
+    taskOrder:
+    - Configure Environment
+    - Get API Token
+    - Get vSphere Cloud Accounts,Get Project,Get Packer Image Profile
+    - Export Object IDs
+    tasks:
+      Export Object IDs:
         type: CI
         input:
           steps:
-          - set +x
-          - source /build/terraform.secrets
-          - set -x
+          - export CloudAccountId=$(echo '${Prepare Environment.Get vSphere Cloud Accounts.output.responseJson}'
+            | jq -r '.content[] | select( .hostName == "${input.Packer-Build-vCenter-Server}") | .id')
+          - export ProjectId=$(echo '${Prepare Environment.Get Project.output.responseJson}' | jq -r '.content[0].id')
           - ''
-          - cd /build/templates/terraform/release
-          - terraform init -no-color >> /dev/null
-          - terraform plan -no-color -out=tf.release.plan
+          - export ExternalRegionId=$(echo '${Prepare Environment.Get vSphere Cloud Accounts.output.responseJson}'
+            | jq -r '.content[] | select( .hostName == "${input.Packer-Build-vCenter-Server}") | .enabledRegionIds[0]')
+          - export RegionId=$(echo '${Prepare Environment.Get vSphere Cloud Accounts.output.responseJson}'
+            | jq -r '.content[] | select( .hostName == "${input.Packer-Build-vCenter-Server}") | ._links.regions.hrefs[0]'
+            | sed 's|/iaas/api/regions/||')
           - ''
-          export: [
-            ]
-          artifacts: [
-            ]
-          process: [
-            ]
-      Run Release Plan:
-        type: CI
-        input:
-          steps:
-          - set +x
-          - source /build/terraform.secrets
-          - set -x
-          - ''
-          - cd /build/templates/terraform/release
-          - terraform init -no-color >> /dev/null
-          - terraform apply -no-color --auto-approve tf.release.plan
-          - ''
-          - ''
-          export: [
-            ]
-          artifacts: [
-            ]
-          process: [
-            ]
-      Get Image Mapping ID:
-        type: CI
-        input:
-          steps:
-          - export MAPPINGID=$(echo '${Release.Get Existing Image Mapping.output.responseJson.content}'
-            | jq -r '.[0].id')
+          - export ImageProfileId=$(echo '${Prepare Environment.Get Packer Image Profile.output.responseJson}'
+            | jq -r '.content[0].id')
           - ''
           export:
-          - MAPPINGID
+          - CloudAccountId
+          - ProjectId
+          - RegionId
+          - ImageProfileId
+          - ExternalRegionId
+          artifacts: [
+            ]
+          process: [
+            ]
+      Get vSphere Cloud Accounts:
+        type: REST
+        input:
+          action: get
+          url: ${input.Packer-Build-vRA-Url}/iaas/api/cloud-accounts-vsphere
+          headers:
+            Accept: application/json
+            Authorization: ${Prepare Environment.Get API Token.output.responseHeaders.Authorization}
+          payload: ''
+      Get Project:
+        type: REST
+        input:
+          action: get
+          url: ${input.Packer-Build-vRA-Url}/iaas/api/projects?$filter=((name%20eq%20%27${input.Packer-Build-vRA-Project}%27))
+          headers:
+            Accept: application/json
+            Authorization: ${Prepare Environment.Get API Token.output.responseHeaders.Authorization}
+          payload: ''
+      Get API Token:
+        type: REST
+        input:
+          action: post
+          url: ${input.Packer-Build-vRA-Url}/csp/gateway/am/idp/auth/login?access_token
+          headers:
+            Accept: application/json
+            Content-Type: application/json
+          payload: |-
+            {
+              "username": "${Prepare Environment.Configure Environment.output.exports.vraUser}",
+              "password": "${input.Packer-Build-vRA-Password}",
+              "domain": "${Prepare Environment.Configure Environment.output.exports.vraDomain}"
+            }
+      Configure Environment:
+        type: CI
+        input:
+          steps:
+          - export BUILDTIME="$(date "+%Y%m%d-%H%M%S")"
+          - '#export BUILDTIME="20200713-102624"'
+          - '# Create environment variables'
+          - cat <<EOF >> /build/packer.secrets
+          - export VCPASS='${input.Packer-Build-vCenter-User-Password}'
+          - export VCSERVER="${input.Packer-Build-vCenter-Server}"
+          - export VCUSER="${input.Packer-Build-vCenter-User}"
+          - export VCDATASTORE="${input.Packer-Build-vCenter-Datastore}"
+          - export VCFOLDER="${input.Packer-Build-vCenter-Folder}"
+          - export VCCLUSTER="${input.Packer-Build-vCenter-Cluster}"
+          - export VCNETWORK="${input.Packer-Build-vCenter-Network}"
+          - export SSHUSER="autotmm"
+          - export SSHPASS="VMware1!"
+          - export BUILDTIME=$BUILDTIME
+          - EOF
+          - '# Split the username for domain authentication'
+          - IFS="@" read this that <<< "${input.Packer-Build-vRA-Username}"
+          - export vraUser=$this
+          - export vraDomain=$that
+          - '# Get templates from git'
+          - git clone ${input.Packer-Build-Git-Repository} templates
+          - ''
+          - ''
+          - ''
+          export:
+          - BUILDTIME
+          - vraUser
+          - vraDomain
+          artifacts: [
+            ]
+          process: [
+            ]
+      Get Packer Image Profile:
+        type: REST
+        input:
+          action: get
+          url: ${input.Packer-Build-vRA-Url}/iaas/api/image-profiles?$filter=((name%20eq%20%27packer-image-profile%27))
+          headers:
+            Accept: application/json
+            Authorization: ${Prepare Environment.Get API Token.output.responseHeaders.Authorization}
+          payload: ''
+  Release:
+    taskOrder:
+    - Get Image Profile
+    - Create Image Profile JSON
+    - Update Image Profile
+    tasks:
+      Get Image Profile:
+        type: REST
+        input:
+          action: get
+          url: ${input.Packer-Build-vRA-Url}/iaas/api/image-profiles?$filter=((name%20eq%20%27packer-image-profile%27))
+          headers:
+            Accept: application/json
+            Authorization: ${Prepare Environment.Get API Token.output.responseHeaders.Authorization}
+          payload: ''
+      Update Image Profile:
+        type: REST
+        input:
+          action: patch
+          url: ${input.Packer-Build-vRA-Url}/iaas/api/image-profiles/${Release.Get Image Profile.output.responseJson.content[0].id}
+          headers:
+            Content-Type: application/json
+            Authorization: ${Prepare Environment.Get API Token.output.responseHeaders.Authorization}
+          payload: ${Release.Create Image Profile JSON.output.exports.profileJson}
+      Create Image Profile JSON:
+        type: CI
+        input:
+          steps:
+          - buildImages=${input.Packer-Build-Images}
+          - buildTime=${Prepare Environment.Configure Environment.output.exports.BUILDTIME}
+          - regionId=${Prepare Environment.Export Object IDs.output.exports.RegionId}
+          - projectId=${Prepare Environment.Export Object IDs.output.exports.ProjectId}
+          - ''
+          - ''
+          - echo $(echo '${Release.Get Image Profile.output.responseJson}' | jq '.content[0]' | jq 'del(..
+            | ._links?, .osFamily?, .externalRegionId?, .isPrivate?, .externalId?, .updatedAt?, .organizationId?,
+            .orgId?) | del(.id)') > new-profile.json
+          - '# Add in the Region ID'
+          - echo $(jq ".regionId = \"$regionId\"" new-profile.json) > new-profile.json
+          - ''
+          - ''
+          - for image in $(echo "$buildImages" | tr ',' ' '); do
+          - '    templateName=$(echo "packer-$image-$buildTime" | tr ''[:upper:]'' ''[:lower:]'');'
+          - '    echo $(jq ".imageMappings.mapping.\"[Packer] $image\".name = \"$templateName\"" new-profile.json)
+            > new-profile.json '
+          - '    templateId=$(echo ''${Build.Get Images.output.responseJson}'' | jq -r ".content[] | select(
+            .name == \"$templateName\") | .id")'
+          - '    echo $(jq ".imageMappings.mapping.\"[Packer] $image\".id = \"$templateId\"" new-profile.json)
+            > new-profile.json '
+          - done
+          - ''
+          - imageMapping=$(jq -r '.imageMappings.mapping' new-profile.json)
+          - '# Copy the image mappings to the correct path, and delete the incorrect path'
+          - echo $(jq --argjson imageMapping "$imageMapping" '.imageMapping = $imageMapping' new-profile.json
+            | jq 'del(.imageMappings)') > new-profile.json
+          - ''
+          - '# Remove the Packer Test image mappings'
+          - echo $(jq 'delpaths([paths | select(.[-1] | strings | contains("Packer Test"))])' new-profile.json)
+            > new-profile.json
+          - ''
+          - export profileJson=$(cat new-profile.json)
+          - ''
+          export:
+          - profileJson
           artifacts: [
             ]
           process: [
