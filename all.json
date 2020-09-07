@@ -350,6 +350,16 @@
             "type": "shell"
         },
         {
+            "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
+            "only": [
+                "Ubuntu1804"
+            ],
+            "scripts": [
+                "{{ template_dir }}/scripts/ubuntu_template_cleanup.sh"
+            ],
+            "type": "shell"
+        },
+        {
             "only": [
                 "Windows2016"
             ],
