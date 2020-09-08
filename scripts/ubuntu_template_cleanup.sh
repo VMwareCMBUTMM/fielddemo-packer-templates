@@ -1,5 +1,7 @@
+#!/bin/bash
+
 # Configure cloud-init for OVF only
-echo 'datasource_list: [ OVF ]' | sudo -s tee /etc/cloud/cloud.cfg.d/90_dpkg.cfg
+echo 'datasource_list: [ OVF, None ]' | sudo -s tee /etc/cloud/cloud.cfg.d/90_dpkg.cfg
 
 # Cleanup VM for Templating
 # Source: https://jimangel.io/post/create-a-vm-template-ubuntu-18.04/
@@ -56,13 +58,8 @@ hostnamectl set-hostname localhost
 #cleanup apt
 apt clean
 
-# set dhcp to use mac - this is a little bit of a hack but I need this to be placed under the active nic settings
-# also look in /etc/netplan for other config files
-sed -i 's/optional: true/dhcp-identifier: mac/g' /etc/netplan/50-cloud-init.yaml
-
 # cleans out all of the cloud-init cache / logs - this is mainly cleaning out networking info
 cloud-init clean --logs
 
 #cleanup shell history
-cat /dev/null > ~/.bash_history && history -c
-history -w
+cat /dev/null > ~/.bash_history

@@ -352,7 +352,9 @@
         {
             "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
             "only": [
-                "Ubuntu1804"
+                "Ubuntu1804",
+                "Ubuntu1910",
+                "Ubuntu2004"
             ],
             "scripts": [
                 "{{ template_dir }}/scripts/ubuntu_template_cleanup.sh"
