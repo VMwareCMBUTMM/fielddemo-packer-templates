@@ -308,7 +308,6 @@
             "type": "shell"
         },
         {
-            "execute_command": "echo '{{user `ssh_password`}}' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
             "only": [
                 "Ubuntu1804"
             ],
