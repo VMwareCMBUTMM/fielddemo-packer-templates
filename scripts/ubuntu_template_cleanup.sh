@@ -55,9 +55,6 @@ sed -i 's/preserve_hostname: false/preserve_hostname: true/g' /etc/cloud/cloud.c
 truncate -s0 /etc/hostname
 hostnamectl set-hostname localhost
 
-#cleanup apt
-apt clean
-
 # cleans out all of the cloud-init cache / logs - this is mainly cleaning out networking info
 cloud-init clean --logs
 
