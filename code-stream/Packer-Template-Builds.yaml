@@ -20,55 +20,65 @@ input:
   Packer-Build-vRA-Url: vRAURL
   Packer-Build-vRA-Username: vRAUser
   Packer-Build-vRA-vSphere-Cloud-Account: vRAvSphereCloudAccount
+  Packer-Build-SSH-User: SshUserName
+  Packer-Build-SSH-Password: SshUserPassword
 _inputMeta:
   Packer-Build-vCenter-Network:
+    mandatory: true
     description: Name of the DHCP enabled vCenter Network on which to build the VMs
-    mandatory: true
   Packer-Build-vCenter-User:
+    mandatory: true
     description: Name of the vCenter User that Packer will use to build
+  Packer-Build-SSH-Password:
     mandatory: true
+    description: SSH Password for the Packer built templates
   Packer-Build-vRA-Username:
-    description: Name of the vRealize Automation user that Code Stream will use to make API calls
     mandatory: true
+    description: Name of the vRealize Automation user that Code Stream will use to make API calls (username
+      for vSphere.local, username@domain.com for AD integrated)
   Packer-Build-vCenter-Datastore:
+    mandatory: true
     description: Name of the vCenter Datastore on which to build the VMs
-    mandatory: true
   Packer-Build-vRA-Password:
+    mandatory: true
     description: Password of the vRealize Automation user that Code Stream will use to make API calls
-    mandatory: true
   Packer-Build-vCenter-Cluster:
+    mandatory: true
     description: Name of the vCenter Cluster on which to build the VMs
-    mandatory: true
   Packer-Build-vRA-Project:
+    mandatory: true
     description: Name of the vRealize Automation Project in which the test deployments are performed
-    mandatory: true
   Packer-Build-vRA-Url:
-    description: Base URL of the vRealize Automation environment (e.g. https://vra.fqdn)
     mandatory: true
+    description: Base URL of the vRealize Automation environment (e.g. https://vra.fqdn)
   Packer-Build-Images:
+    mandatory: true
     description: Comma separated list of Packer Builder Image Names (e.g. used with the packer --only
       flag)
-    mandatory: true
   Packer-Build-Git-Repository:
+    mandatory: true
     description: URL of the Packer Template Repository
-    mandatory: true
   Packer-Build-vCenter-Folder:
+    mandatory: true
     description: Name of the vCenter Folder in which to build the VMs
-    mandatory: true
   Packer-Build-vRA-vSphere-Cloud-Account:
-    description: 'Name of the vSphere '
     mandatory: false
+    description: 'Name of the vSphere '
+  Packer-Build-SSH-User:
+    mandatory: true
+    description: SSH Username for the Packer built templates
   Packer-Build-vCenter-User-Password:
+    mandatory: true
     description: Password of the vCenter User that Packer will use to build
-    mandatory: true
   Packer-Build-vCenter-Server:
-    description: Name of the vCenter Server that Packer will use to build
     mandatory: true
+    description: Name of the vCenter Server that Packer will use to build
 workspace:
-  endpoint: sc2-fd-perm-docker
+  endpoint: Docker Host in VMC
   image: sammcgeown/codestream-ci-packer:latest
   registry: ''
   path: /build
+  autoCloneForTrigger: true
   limits:
     cpu: 1.0
     memory: 512
@@ -134,7 +144,8 @@ stages:
           summary: Please test the deployed images
           description: ''
           sendemail: false
-          expirationInDays: 3
+          expiration: 3
+          expirationUnit: DAYS
           pipelineName: ${name}
           cancelPreviousPendingUserOp: false
       Create Image Profile:
@@ -307,8 +318,8 @@ stages:
         type: REST
         input:
           action: get
-          url: ${input.Packer-Build-vRA-Url}/iaas/api/fabric-images?$filter=(name%20eq%20%27packer-*-${Prepare
-            Environment.Configure Environment.output.exports.BUILDTIME}%27)
+          url: ${input.Packer-Build-vRA-Url}/iaas/api/fabric-images?$filter=(name eq 'packer-*-${Prepare
+            Environment.Configure Environment.output.exports.BUILDTIME}')
           headers:
             Content-Type: application/json
             Authorization: ${Prepare Environment.Get API Token.output.responseHeaders.Authorization}
@@ -361,7 +372,7 @@ stages:
         type: REST
         input:
           action: get
-          url: ${input.Packer-Build-vRA-Url}/iaas/api/projects?$filter=((name%20eq%20%27${input.Packer-Build-vRA-Project}%27))
+          url: ${input.Packer-Build-vRA-Url}/iaas/api/projects?$filter=(name eq '${input.Packer-Build-vRA-Project}')
           headers:
             Accept: application/json
             Authorization: ${Prepare Environment.Get API Token.output.responseHeaders.Authorization}
@@ -395,14 +406,14 @@ stages:
           - export VCFOLDER="${input.Packer-Build-vCenter-Folder}"
           - export VCCLUSTER="${input.Packer-Build-vCenter-Cluster}"
           - export VCNETWORK="${input.Packer-Build-vCenter-Network}"
-          - export SSHUSER="autotmm"
-          - export SSHPASS="VMware1!"
+          - export SSHUSER="${input.Packer-Build-SSH-User}"
+          - export SSHPASS="${input.Packer-Build-SSH-Password}"
           - export BUILDTIME=$BUILDTIME
           - EOF
           - '# Split the username for domain authentication'
-          - IFS="@" read this that <<< "${input.Packer-Build-vRA-Username}"
-          - export vraUser=$this
-          - export vraDomain=$that
+          - IFS="@" read user domain <<< "${input.Packer-Build-vRA-Username}"
+          - export vraUser=$user
+          - export vraDomain=$domain
           - '# Get templates from git'
           - git clone ${input.Packer-Build-Git-Repository} templates
           - ''
@@ -420,7 +431,7 @@ stages:
         type: REST
         input:
           action: get
-          url: ${input.Packer-Build-vRA-Url}/iaas/api/image-profiles?$filter=((name%20eq%20%27packer-image-profile%27))
+          url: ${input.Packer-Build-vRA-Url}/iaas/api/image-profiles?$filter=(name eq 'packer-image-profile')
           headers:
             Accept: application/json
             Authorization: ${Prepare Environment.Get API Token.output.responseHeaders.Authorization}
@@ -435,7 +446,7 @@ stages:
         type: REST
         input:
           action: get
-          url: ${input.Packer-Build-vRA-Url}/iaas/api/image-profiles?$filter=((name%20eq%20%27packer-image-profile%27))
+          url: ${input.Packer-Build-vRA-Url}/iaas/api/image-profiles?$filter=(name eq 'packer-image-profile')
           headers:
             Accept: application/json
             Authorization: ${Prepare Environment.Get API Token.output.responseHeaders.Authorization}
