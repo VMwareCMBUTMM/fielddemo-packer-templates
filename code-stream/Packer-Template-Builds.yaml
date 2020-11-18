@@ -280,7 +280,7 @@ stages:
         preCondition: '"${input.__debug}" == "true"'
         input:
           approvers:
-          - smcgeown
+          - ${requestBy}
           approverGroups: [
             ]
           summary: Check values
@@ -482,7 +482,7 @@ stages:
         preCondition: '"${input.__debug}" == "true"'
         input:
           approvers:
-          - smcgeown
+          - ${requestBy}
           approverGroups: [
             ]
           summary: Check values
@@ -576,7 +576,7 @@ stages:
         preCondition: '"${input.__debug}" == "true"'
         input:
           approvers:
-          - smcgeown
+          - ${requestBy}
           approverGroups: [
             ]
           summary: Check values
